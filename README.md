@@ -1,16 +1,26 @@
-# weather
+# WeatherApp
 
-Weather App
+This is my first Flutter project that I developed with Backend.
+Django is used in the background of this simple and easy to use Weather app.
 
-## Getting Started
+## Installation
 
-This project is a starting point for a Flutter application.
+1. Create a new Flutter project:
+```
+flutter create weather_app
+```
 
-A few resources to get you started if this is your first Flutter project:
+2. Clone the repository:
+```
+git clone https://github.com/OverBrave/WeatherApp.git
+```
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+3. Test your changes by running the app on an emulator or a physical device:
+```
+flutter run
+```
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Packages
+
+- [hive](https://pub.dev/packages/google_nav_bar) - Save for user selected city in device storage.
+- [provider](https://pub.dev/packages/provider) - It provides a state management technique that is used for managing a piece of data around the app.

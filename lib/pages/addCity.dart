@@ -7,8 +7,10 @@ class addCity extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        iconTheme: const IconThemeData(color: Colors.black),
         title: const TextField(
-          decoration: InputDecoration(hintText: 'Search city name...'),
+          style: TextStyle(color: Colors.black),
+          decoration: InputDecoration(hintText: 'Search city name...', ),
         ),
       ),
     );
