@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
+import '../main.dart';
+
+
+
 class WeatherHomePage extends StatefulWidget {
-  const WeatherHomePage({super.key, required this.city});
+  const WeatherHomePage({super.key});
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
@@ -12,8 +16,6 @@ class WeatherHomePage extends StatefulWidget {
   // case the title) provided by the parent (in this case the App widget) and
   // used by the build method of the State. Fields in a Widget subclass are
   // always marked "final".
-
-  final String city;
 
   @override
   State<WeatherHomePage> createState() => _WeatherHomePageState();
@@ -28,7 +30,9 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
     // The Flutter framework has been optimized to make rerunning build methods
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
-    int cityCount = 9;
+    final int cityCount = cityDataBox.get("cities").first.length ?? 0;
+
+    String lastSelectedCity = cityDataBox.get("lastSelected") ?? "Select City";
 
     return Scaffold(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
@@ -41,8 +45,8 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
           // the App.build method, and use it to set our appbar title.
           title: Padding(
             padding:
-                EdgeInsets.only(left: MediaQuery.of(context).size.width * 0.25),
-            child: Text(widget.city),
+                EdgeInsets.only(left: MediaQuery.of(context).size.width * 0.17),
+            child: Text(lastSelectedCity),
           ),
         ),
         drawer: Drawer(
@@ -56,11 +60,13 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
               SizedBox(
                 height: cityCount < 11 ? 35 + (cityCount * 50) : 575,
                 child: ValueListenableBuilder<Box>(
-                  valueListenable: Hive.box('city').listenable(),
-                  builder: (BuildContext context, Box<dynamic> value, Widget? child) {
+                  valueListenable: Hive.box('selectedCities').listenable(keys: ["cities"]),
+                  builder: (final BuildContext context, final Box<dynamic> value, final Widget? child) {
+
+                    List<String> cities = value.values.first;
+
                     return ListView.builder(
-                      // Important: Remove any padding from the ListView.
-                      itemCount: cityCount,
+                      itemCount:  cities.length,
                       itemExtent: 50,
                       padding: const EdgeInsets.only(right: 15, left: 15),
                       itemBuilder: (final BuildContext context, final int index) {
@@ -68,7 +74,14 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
                           leading: const Icon(
                             Icons.location_city,
                           ),
-                          title: Text("City $index"),
+                          title: Text(cities.elementAt(index)),
+                          onTap: () {
+                            cityDataBox.put("lastSelected", cities.elementAt(index));
+                            setState(() {
+                              lastSelectedCity = cities.elementAt(index);
+                              Navigator.pop(context);
+                            });
+                          },
                         );
                       },
                     );
@@ -163,7 +176,7 @@ class InfoCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       Text("DayName"),
-                      Text("Nem"),
+                      Text("Moisture"),
                       Text("DayTime"),
                       Text("NightTime "),
                       Text("1."),

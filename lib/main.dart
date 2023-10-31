@@ -5,26 +5,28 @@ import 'package:weather/pages/addCity.dart';
 
 import 'pages/main_page.dart';
 
+final cityDataBox = Hive.box('selectedCities');
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
-  await Hive.openBox('city');
-  runApp(const MyApp());
+  await Hive.openBox('selectedCities');
+  //await cityDataBox.delete('cities');
+  //await cityDataBox.put('cities', <String>[]);
+  runApp(WeatherApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  final String city = "Test";
+class WeatherApp extends StatelessWidget {
+  WeatherApp({super.key});
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Weather App',
+      initialRoute: '/',
       routes: {
-        '/': (context) => WeatherHomePage(city: city),
-        '/addCity': (context) => const addCity(),
+        '/': (context) => WeatherHomePage(),
+        '/addCity': (context) => const AddCity(),
       },
       theme: ThemeData(
         listTileTheme: const ListTileThemeData(
