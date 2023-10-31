@@ -34,6 +34,8 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
 
     String lastSelectedCity = cityDataBox.get("lastSelected") ?? "Select City";
 
+    //TODO: City deletion will be added.
+
     return Scaffold(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         appBar: AppBar(
