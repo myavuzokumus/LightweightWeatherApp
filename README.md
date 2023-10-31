@@ -22,5 +22,4 @@ flutter run
 
 ## Packages
 
-- [hive](https://pub.dev/packages/google_nav_bar) - Save for user selected city in device storage.
-- [provider](https://pub.dev/packages/provider) - It provides a state management technique that is used for managing a piece of data around the app.
+- [hive](https://pub.dev/packages/google_nav_bar) - Save for the user’s selected city in device’s storage.
