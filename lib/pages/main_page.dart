@@ -171,7 +171,7 @@ class InfoCard extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      Expanded(flex: 2, child: Text("Yesterday")),
+                      const Expanded(flex: 2, child: Text("Yesterday")),
                       SizedBox(width: 20, child: Text("${yesterday.humidity}")),
                       Lottie.asset("assets/icons/lottie/humidity.json", width: 35, animate: false),
                       const SizedBox(width: 15),
