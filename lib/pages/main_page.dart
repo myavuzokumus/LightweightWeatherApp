@@ -21,7 +21,7 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
     // The Flutter framework has been optimized to make rerunning build methods
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
-    final int cityCount = cityDataBox.get("cities").first.length ?? 0;
+    final int cityCount = cityDataBox.get("cities").length ?? 0;
 
     String lastSelectedCity = cityDataBox.get("lastSelected") ?? "Select City";
 
@@ -60,6 +60,7 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
                       final Box<dynamic> value, final Widget? child) {
                     final List<String> cities = value.values.first;
 
+                    print(cityCount);
                     return ListView.builder(
                       itemCount: cities.length,
                       itemExtent: 50,
