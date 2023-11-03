@@ -22,16 +22,14 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
 
     String lastSelectedCity = cityDataBox.get("lastSelected") ?? "Select City";
 
-
     //TODO: City deletion will be added.
     //TODO: App Icon will be added.
-    //TODO: Web & Desktop incompatiblity will be fixed.
 
     return Scaffold(
         extendBodyBehindAppBar: true,
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         appBar: AppBar(
-          flexibleSpace: Container (
+          flexibleSpace: Container(
             decoration: BoxDecoration (
               gradient: LinearGradient (
                   begin: Alignment.topCenter,
@@ -68,14 +66,22 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
                     child: cities == null ? const Text("No city added yet.") : ListView.builder(
                       itemCount: cities.length,
                       itemExtent: 50,
-                      padding: const EdgeInsets.only(right: 15, left: 15),
                       itemBuilder:
                           (final BuildContext context, final int index) {
                         return ListTile(
-                          leading: const Icon(
-                            Icons.location_city,
+                          titleAlignment: ListTileTitleAlignment.center,
+                          leading: const Padding(
+                            padding: EdgeInsets.only(left: 30),
+                            child: Icon(
+                              Icons.location_city,
+                            ),
                           ),
-                          title: Text(cities.elementAt(index)),
+                          title: Padding(
+                            padding: const EdgeInsets.only(right: 15),
+                            child: Text(cities.elementAt(index)),
+                          ),
+                          selectedColor: Colors.amberAccent,
+                          selected: lastSelectedCity == cities.elementAt(index),
                           onTap: () {
                             cityDataBox.put(
                                 "lastSelected", cities.elementAt(index));
@@ -222,7 +228,7 @@ class InfoCard extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: <Widget>[
                               Expanded(
-                                  flex: 2, child: Text(dayDetails.dayName, style: TextStyle(fontWeight: FontWeight.bold))),
+                                  flex: 2, child: Text(dayDetails.dayName, style: const TextStyle(fontWeight: FontWeight.bold))),
                               SizedBox(
                                   width: 20,
                                   child: Text("${dayDetails.humidity}")),
