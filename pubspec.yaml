@@ -39,6 +39,7 @@ dependencies:
   hive_flutter: ^1.1.0
   path_provider: ^2.1.1
   lottie: ^2.7.0
+  flutter_screenutil: ^5.9.0
 
   # flutter_svg: ^2.0.9
 
