@@ -1,6 +1,6 @@
+import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:weather/pages/addCity.dart';
 
@@ -10,25 +10,52 @@ final cityDataBox = Hive.box('selectedCities');
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   await Hive.initFlutter();
   await Hive.openBox('selectedCities');
-  //await cityDataBox.delete('cities');
-  //await cityDataBox.put('cities', <String>[]);
-  runApp(WeatherApp());
+
+  doWhenWindowReady(() {
+    const initialSize = Size(500, 700);
+    appWindow.minSize = initialSize;
+    appWindow.size = initialSize;
+    appWindow.alignment = Alignment.center;
+    appWindow.title = "Lightweight Weather App";
+    appWindow.show();
+  });
+
+/*  if (Platform.isWindows) {
+    await windowManager.ensureInitialized();
+
+    const WindowOptions windowOptions = WindowOptions(
+      minimumSize: Size(500, 700),
+      size: Size(500, 700),
+      center: true,
+      backgroundColor: Colors.transparent,
+      skipTaskbar: false,
+    );
+
+    unawaited(windowManager.waitUntilReadyToShow(windowOptions, () async {
+      await windowManager.show();
+      await windowManager.focus();
+    }));
+  }
+*/
+
+  runApp(const WeatherApp());
 }
 
 class WeatherApp extends StatelessWidget {
-  WeatherApp({super.key});
+  const WeatherApp({super.key});
 
-  // This widget is the root of your application.
   @override
-  Widget build(BuildContext context) {
+  Widget build(final BuildContext context) {
     return ScreenUtilInit(
       child: MaterialApp(
+        title: "Lightweight Weather App",
         initialRoute: '/',
         routes: {
-          '/': (context) => WeatherHomePage(),
-          '/addCity': (context) => const AddCity(),
+          '/': (final context) => const WeatherHomePage(),
+          '/addCity': (final context) => const AddCity(),
         },
         theme: ThemeData(
           useMaterial3: true,

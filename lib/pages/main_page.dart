@@ -19,7 +19,6 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
 
   @override
   Widget build(final BuildContext context) {
-
     String lastSelectedCity = cityDataBox.get("lastSelected") ?? "Select City";
 
     //TODO: City deletion will be added.
@@ -30,11 +29,14 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         appBar: AppBar(
           flexibleSpace: Container(
-            decoration: BoxDecoration (
-              gradient: LinearGradient (
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
-                  colors: <Color> [Colors.black.withOpacity(0.7), Colors.transparent]),
+                  colors: <Color>[
+                    Colors.black.withOpacity(0.7),
+                    Colors.transparent
+                  ]),
             ),
           ),
           backgroundColor: Colors.transparent,
@@ -54,45 +56,47 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
               ValueListenableBuilder<Box>(
                 valueListenable:
                     Hive.box('selectedCities').listenable(keys: ["cities"]),
-                builder: (final BuildContext context,
-                    final Box<dynamic> value, final Widget? child) {
-
+                builder: (final BuildContext context, final Box<dynamic> value,
+                    final Widget? child) {
                   final List<String>? cities = cityDataBox.get("cities");
 
                   cityCount = cities?.length ?? 0;
 
                   return SizedBox(
-                    height: cityCount < 11 ? 35 + (cityCount* 50) : 575,
-                    child: cities == null ? const Text("No city added yet.") : ListView.builder(
-                      itemCount: cities.length,
-                      itemExtent: 50,
-                      itemBuilder:
-                          (final BuildContext context, final int index) {
-                        return ListTile(
-                          titleAlignment: ListTileTitleAlignment.center,
-                          leading: const Padding(
-                            padding: EdgeInsets.only(left: 30),
-                            child: Icon(
-                              Icons.location_city,
-                            ),
+                    height: cityCount < 11 ? 35 + (cityCount * 50) : 575,
+                    child: cities == null
+                        ? const Text("No city added yet.")
+                        : ListView.builder(
+                            itemCount: cities.length,
+                            itemExtent: 50,
+                            itemBuilder:
+                                (final BuildContext context, final int index) {
+                              return ListTile(
+                                titleAlignment: ListTileTitleAlignment.center,
+                                leading: const Padding(
+                                  padding: EdgeInsets.only(left: 30),
+                                  child: Icon(
+                                    Icons.location_city,
+                                  ),
+                                ),
+                                title: Padding(
+                                  padding: const EdgeInsets.only(right: 15),
+                                  child: Text(cities.elementAt(index)),
+                                ),
+                                selectedColor: Colors.amberAccent,
+                                selected:
+                                    lastSelectedCity == cities.elementAt(index),
+                                onTap: () {
+                                  cityDataBox.put(
+                                      "lastSelected", cities.elementAt(index));
+                                  setState(() {
+                                    lastSelectedCity = cities.elementAt(index);
+                                    Navigator.pop(context);
+                                  });
+                                },
+                              );
+                            },
                           ),
-                          title: Padding(
-                            padding: const EdgeInsets.only(right: 15),
-                            child: Text(cities.elementAt(index)),
-                          ),
-                          selectedColor: Colors.amberAccent,
-                          selected: lastSelectedCity == cities.elementAt(index),
-                          onTap: () {
-                            cityDataBox.put(
-                                "lastSelected", cities.elementAt(index));
-                            setState(() {
-                              lastSelectedCity = cities.elementAt(index);
-                              Navigator.pop(context);
-                            });
-                          },
-                        );
-                      },
-                    ),
                   );
                 },
               ),
@@ -121,40 +125,41 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
               child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
-                Container(
-                  width: 512,
-                  margin: const EdgeInsets.all(20.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                       Flexible(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              '24°',
-                              style: TextStyle(fontSize: 72.spMin),
+                    Container(
+                      width: 512,
+                      margin: EdgeInsets.only(top: 50.h, left: 20, right: 20, bottom: 20),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Flexible(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  '24°',
+                                  style: TextStyle(fontSize: 72.spMin),
+                                ),
+                                Text(
+                                  'Feels 19°',
+                                  style: TextStyle(fontSize: 21.spMin),
+                                ),
+                                Text(
+                                  '25° / 17°',
+                                  style: TextStyle(fontSize: 21.spMin),
+                                ),
+                              ],
                             ),
-                            Text(
-                              'Feels 19°',
-                              style: TextStyle(fontSize: 21.spMin),
-                            ),
-                            Text(
-                              '25° / 17°',
-                              style: TextStyle(fontSize: 21.spMin),
-                            ),
-                          ],
-                        ),
+                          ),
+                          Flexible(
+                            child: Lottie.asset(
+                                'assets/icons/lottie/clear-day.json'),
+                          ),
+                        ],
                       ),
-                      Flexible(
-                        child: Lottie.asset('assets/icons/lottie/clear-day.json'),
-                      ),
-                    ],
-                  ),
-                ),
-                InfoCard()
-              ]),
+                    ),
+                    InfoCard()
+                  ]),
             ),
           ),
         ));
@@ -179,7 +184,7 @@ class InfoCard extends StatelessWidget {
         child: InkWell(
           splashColor: Colors.blue.withAlpha(30),
           child: Container(
-            width: 275.w,
+            width: 300.w,
             height: 250,
             padding: const EdgeInsets.all(12),
             child: Column(
@@ -190,7 +195,8 @@ class InfoCard extends StatelessWidget {
                     children: [
                       const Expanded(flex: 2, child: Text("Yesterday")),
                       SizedBox(width: 20, child: Text("${yesterday.humidity}")),
-                      Lottie.asset("assets/icons/lottie/humidity.json", width: 35, animate: false),
+                      Lottie.asset("assets/icons/lottie/humidity.json",
+                          width: 35, animate: false),
                       const SizedBox(width: 15),
                       SizedBox(
                         width: 30,
@@ -201,8 +207,10 @@ class InfoCard extends StatelessWidget {
                         child: Text("${yesterday.nightTemperature}°"),
                       ),
                       const SizedBox(width: 15),
-                      Lottie.asset(yesterday.dayType, width: 30, animate: false),
-                      Lottie.asset(yesterday.nightType, width: 30, animate: false),
+                      Lottie.asset(yesterday.dayType,
+                          width: 30, animate: false),
+                      Lottie.asset(yesterday.nightType,
+                          width: 30, animate: false),
                     ],
                   ),
                 ),
@@ -228,7 +236,10 @@ class InfoCard extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: <Widget>[
                               Expanded(
-                                  flex: 2, child: Text(dayDetails.dayName, style: const TextStyle(fontWeight: FontWeight.bold))),
+                                  flex: 2,
+                                  child: Text(dayDetails.dayName,
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold))),
                               SizedBox(
                                   width: 20,
                                   child: Text("${dayDetails.humidity}")),
@@ -241,11 +252,15 @@ class InfoCard extends StatelessWidget {
                               ),
                               SizedBox(
                                 width: 25,
-                                child: Text("${dayDetails.nightTemperature}°",),
+                                child: Text(
+                                  "${dayDetails.nightTemperature}°",
+                                ),
                               ),
                               const SizedBox(width: 15),
-                              Lottie.asset(dayDetails.dayType, width: 30, animate: false),
-                              Lottie.asset(dayDetails.nightType, width: 30, animate: false),
+                              Lottie.asset(dayDetails.dayType,
+                                  width: 30, animate: false),
+                              Lottie.asset(dayDetails.nightType,
+                                  width: 30, animate: false),
                             ],
                           ),
                         );
