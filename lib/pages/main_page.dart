@@ -21,14 +21,10 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
   Widget build(final BuildContext context) {
     String lastSelectedCity = cityDataBox.get("lastSelected") ?? "Select City";
 
-    //TODO: City deletion will be added.
-    //TODO: App Icon will be added.
-
     return Scaffold(
         extendBodyBehindAppBar: true,
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         appBar: AppBar(
-
           leading: Builder(
             builder: (final BuildContext context) {
               return IconButton(
@@ -74,6 +70,8 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
                   final List<String>? cities = cityDataBox.get("cities");
 
                   cityCount = cities?.length ?? 0;
+
+                  //TODO: City deletion will be added.
 
                   return SizedBox(
                     height: cityCount < 11 ? 35 + (cityCount * 50) : 575,
