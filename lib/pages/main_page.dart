@@ -13,20 +13,18 @@ class WeatherHomePage extends StatefulWidget {
 }
 
 class _WeatherHomePageState extends State<WeatherHomePage> {
+
+  static int cityCount = 0;
+
   @override
   Widget build(final BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
-    final int cityCount = cityDataBox.get("cities").length ?? 0;
 
     String lastSelectedCity = cityDataBox.get("lastSelected") ?? "Select City";
 
+
     //TODO: City deletion will be added.
     //TODO: App Icon will be added.
+    //TODO: Web & Desktop incompatiblity will be fixed.
 
     return Scaffold(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
@@ -58,10 +56,12 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
                       Hive.box('selectedCities').listenable(keys: ["cities"]),
                   builder: (final BuildContext context,
                       final Box<dynamic> value, final Widget? child) {
-                    final List<String> cities = value.values.first;
 
-                    print(cityCount);
-                    return ListView.builder(
+                    final List<String>? cities = cityDataBox.get("cities");
+                    cityCount = cities?.length ?? 0;
+
+                    return cities == null ? Text("No city added yet.") :
+                    ListView.builder(
                       itemCount: cities.length,
                       itemExtent: 50,
                       padding: const EdgeInsets.only(right: 15, left: 15),
@@ -86,12 +86,15 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
                   },
                 ),
               ),
-              FilledButton.tonalIcon(
-                  label: const Text('Add city'),
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/addCity');
-                  },
-                  icon: const Icon(Icons.add)),
+              SizedBox(
+                height: cityCount < 11 ? 35 + (cityCount * 50) : 575,
+                child: FilledButton.tonalIcon(
+                    label: const Text('Add city'),
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/addCity');
+                    },
+                    icon: const Icon(Icons.add)),
+              ),
             ],
           ),
         ),
@@ -112,7 +115,7 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
                 Container(
                   margin: const EdgeInsets.all(20.0),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Flexible(
