@@ -16,15 +16,17 @@ void main() async {
   await Hive.initFlutter();
   await Hive.openBox('selectedCities');
 
-  if (defaultTargetPlatform != TargetPlatform.iOS && defaultTargetPlatform != TargetPlatform.android && !kIsWeb) {
+  if (defaultTargetPlatform != TargetPlatform.iOS &&
+      defaultTargetPlatform != TargetPlatform.android &&
+      !kIsWeb) {
     doWhenWindowReady(() {
-    const initialSize = Size(500, 700);
-    appWindow.minSize = initialSize;
-    appWindow.size = initialSize;
-    appWindow.alignment = Alignment.center;
-    appWindow.title = "Lightweight Weather App";
-    appWindow.show();
-  });
+      const initialSize = Size(500, 700);
+      appWindow.minSize = initialSize;
+      appWindow.size = initialSize;
+      appWindow.alignment = Alignment.center;
+      appWindow.title = "Lightweight Weather App";
+      appWindow.show();
+    });
   }
 
   runApp(const WeatherApp());
@@ -46,27 +48,18 @@ class WeatherApp extends StatelessWidget {
         theme: ThemeData(
           useMaterial3: true,
           listTileTheme: const ListTileThemeData(
-              textColor: Colors.white,
-              iconColor: Colors.white
-          ),
+              textColor: Colors.white, iconColor: Colors.white),
           iconTheme: const IconThemeData(color: Colors.white),
           primaryColor: Colors.white,
           appBarTheme: const AppBarTheme(
-              titleTextStyle: TextStyle(
-                  color: Colors.white,
-                  fontSize: 28
-              ),
-              iconTheme: IconThemeData(color: Colors.white),
-            ),
-
+            titleTextStyle: TextStyle(color: Colors.white, fontSize: 28),
+            iconTheme: IconThemeData(color: Colors.white),
+          ),
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.lightBlue),
           textTheme: const TextTheme(
             bodyLarge: TextStyle(color: Colors.white),
             bodyMedium: TextStyle(color: Colors.white, fontSize: 16),
-          ).apply(
-              bodyColor: Colors.white,
-              displayColor: Colors.white
-          ),
+          ).apply(bodyColor: Colors.white, displayColor: Colors.white),
         ),
       ),
     );

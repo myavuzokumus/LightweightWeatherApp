@@ -14,7 +14,6 @@ class WeatherHomePage extends StatefulWidget {
 }
 
 class _WeatherHomePageState extends State<WeatherHomePage> {
-
   static int cityCount = 0;
 
   @override
@@ -138,7 +137,8 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
                   children: <Widget>[
                     Container(
                       width: 512,
-                      margin: EdgeInsets.only(top: 50.h, left: 20, right: 20, bottom: 20),
+                      margin: EdgeInsets.only(
+                          top: 50.h, left: 20, right: 20, bottom: 20),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         crossAxisAlignment: CrossAxisAlignment.center,
