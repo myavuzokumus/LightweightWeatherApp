@@ -28,6 +28,19 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
         extendBodyBehindAppBar: true,
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         appBar: AppBar(
+
+          leading: Builder(
+            builder: (final BuildContext context) {
+              return IconButton(
+                icon: const Icon(Icons.menu),
+                onPressed: () {
+                  Scaffold.of(context).openDrawer();
+                },
+                tooltip: 'Open City list',
+              );
+            },
+          ),
+
           flexibleSpace: Container(
             decoration: BoxDecoration(
               gradient: LinearGradient(
