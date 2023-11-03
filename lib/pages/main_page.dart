@@ -28,12 +28,19 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
     //TODO: Web & Desktop incompatiblity will be fixed.
 
     return Scaffold(
+        extendBodyBehindAppBar: true,
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         appBar: AppBar(
-          // TRY THIS: Try changing the color here to a specific color (to
-          // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-          // change color while the other colors stay the same.
+          flexibleSpace: Container (
+            decoration: BoxDecoration (
+              gradient: LinearGradient (
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: <Color> [Colors.black.withOpacity(0.7), Colors.transparent]),
+            ),
+          ),
           backgroundColor: Colors.transparent,
+          surfaceTintColor: Colors.transparent,
           // Here we take the value from the MyHomePage object that was created by
           // the App.build method, and use it to set our appbar title.
           title: Center(child: Text(lastSelectedCity)),
@@ -170,7 +177,6 @@ class InfoCard extends StatelessWidget {
             height: 250,
             padding: const EdgeInsets.all(12),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Opacity(
                   opacity: 0.7,
@@ -196,45 +202,49 @@ class InfoCard extends StatelessWidget {
                 ),
                 const Divider(),
                 Expanded(
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: 5,
-                    itemBuilder:
-                        (final BuildContext context, final int index) {
-                      final Weather dayDetails =
-                          Weather(nextDay[index], 45, 24, 11);
+                  child: MediaQuery.removePadding(
+                    context: context,
+                    removeTop: true,
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: 5,
+                      itemBuilder:
+                          (final BuildContext context, final int index) {
+                        final Weather dayDetails =
+                            Weather(nextDay[index], 45, 24, 11);
 
-                      return InkWell(
-                        onTap: () {
-                          debugPrint('Card tapped.');
-                        },
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: <Widget>[
-                            Expanded(
-                                flex: 2, child: Text(dayDetails.dayName, style: TextStyle(fontWeight: FontWeight.bold))),
-                            SizedBox(
-                                width: 20,
-                                child: Text("${dayDetails.humidity}")),
-                            Lottie.asset("assets/icons/lottie/humidity.json",
-                                width: 35, animate: false),
-                            const SizedBox(width: 15),
-                            SizedBox(
-                              width: 30,
-                              child: Text("${dayDetails.dayTemperature}°"),
-                            ),
-                            SizedBox(
-                              width: 25,
-                              child: Text("${dayDetails.nightTemperature}°",),
-                            ),
-                            const SizedBox(width: 15),
-                            Lottie.asset(dayDetails.dayType, width: 30, animate: false),
-                            Lottie.asset(dayDetails.nightType, width: 30, animate: false),
-                          ],
-                        ),
-                      );
-                    },
+                        return InkWell(
+                          onTap: () {
+                            debugPrint('Card tapped.');
+                          },
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: <Widget>[
+                              Expanded(
+                                  flex: 2, child: Text(dayDetails.dayName, style: TextStyle(fontWeight: FontWeight.bold))),
+                              SizedBox(
+                                  width: 20,
+                                  child: Text("${dayDetails.humidity}")),
+                              Lottie.asset("assets/icons/lottie/humidity.json",
+                                  width: 35, animate: false),
+                              const SizedBox(width: 15),
+                              SizedBox(
+                                width: 30,
+                                child: Text("${dayDetails.dayTemperature}°"),
+                              ),
+                              SizedBox(
+                                width: 25,
+                                child: Text("${dayDetails.nightTemperature}°",),
+                              ),
+                              const SizedBox(width: 15),
+                              Lottie.asset(dayDetails.dayType, width: 30, animate: false),
+                              Lottie.asset(dayDetails.nightType, width: 30, animate: false),
+                            ],
+                          ),
+                        );
+                      },
+                    ),
                   ),
                 ),
               ],
