@@ -23,5 +23,5 @@ flutter run
 ## Packages
 
 - [hive](https://pub.dev/packages/hive) - Save for the user’s selected city in device’s storage.
-- [lottie](https://pub.dev/packages/lottie) - To use animated icons in app.
-- [screenutil](https://pub.dev/packages/flutter_screenutil) - To made responsive design in app.
+- [lottie](https://pub.dev/packages/lottie) - To use animated icons in an app.
+- [screenutil](https://pub.dev/packages/flutter_screenutil) - To make a responsive design for an app.
