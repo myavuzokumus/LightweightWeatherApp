@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -14,7 +16,8 @@ void main() async {
   await Hive.initFlutter();
   await Hive.openBox('selectedCities');
 
-  doWhenWindowReady(() {
+  if (defaultTargetPlatform != TargetPlatform.iOS && defaultTargetPlatform != TargetPlatform.android && !kIsWeb) {
+    doWhenWindowReady(() {
     const initialSize = Size(500, 700);
     appWindow.minSize = initialSize;
     appWindow.size = initialSize;
@@ -22,24 +25,7 @@ void main() async {
     appWindow.title = "Lightweight Weather App";
     appWindow.show();
   });
-
-/*  if (Platform.isWindows) {
-    await windowManager.ensureInitialized();
-
-    const WindowOptions windowOptions = WindowOptions(
-      minimumSize: Size(500, 700),
-      size: Size(500, 700),
-      center: true,
-      backgroundColor: Colors.transparent,
-      skipTaskbar: false,
-    );
-
-    unawaited(windowManager.waitUntilReadyToShow(windowOptions, () async {
-      await windowManager.show();
-      await windowManager.focus();
-    }));
   }
-*/
 
   runApp(const WeatherApp());
 }
