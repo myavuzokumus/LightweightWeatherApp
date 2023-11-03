@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 import '../main.dart';
@@ -13,6 +15,10 @@ class _AddCityState extends State<AddCity> {
 
   TextEditingController searchTextController = TextEditingController();
 
+  List<String> cities = cityDataBox.get("cities") ?? <String>[];
+
+  int foundedCityCount = 0;
+
   @override
   Widget build(final BuildContext context) {
     return Scaffold(
@@ -24,12 +30,13 @@ class _AddCityState extends State<AddCity> {
           decoration: const InputDecoration(hintText: 'Search city name...'),
           onChanged: (final value) {
             setState(() {
+              searchTextController.text.isNotEmpty ? foundedCityCount = 5 : foundedCityCount = 0;
             });
           },
         ),
       ),
       body: ListView.builder(
-        itemCount: 5,
+        itemCount: foundedCityCount,
         itemBuilder:
           (final BuildContext context, final int index) {
             return ListTile(
@@ -39,8 +46,28 @@ class _AddCityState extends State<AddCity> {
                     style: const TextStyle(color: Colors.black)),
                 ),
                 onTap: () async {
-                  await cityDataBox.put("cities", <String>[...?cityDataBox.get("cities"), searchTextController.text]);
-                  Navigator.pop(context, true);
+
+                  if (cities.contains(searchTextController.text))
+                     {
+                       unawaited(showDialog<String>(
+                         context: context,
+                         builder: (final BuildContext context) => AlertDialog(
+                           title: const Text("City can't be added."),
+                           content: const Text("The city already added.", style: TextStyle(color: Colors.indigo)),
+                           actions: <Widget>[
+                             TextButton(
+                               onPressed: () => Navigator.pop(context, 'OK'),
+                               child: const Text('OK'),
+                             ),
+                           ],
+                         ),
+                       ));
+                    }
+                  else {
+                    await cityDataBox.put("cities", <String>[...?cityDataBox.get("cities"), searchTextController.text]);
+                    Navigator.pop(context, true);
+                  }
+
                 },
             );
       },),

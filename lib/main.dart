@@ -31,6 +31,7 @@ class WeatherApp extends StatelessWidget {
           '/addCity': (context) => const AddCity(),
         },
         theme: ThemeData(
+          useMaterial3: true,
           listTileTheme: const ListTileThemeData(
               textColor: Colors.white,
               iconColor: Colors.white
@@ -53,7 +54,6 @@ class WeatherApp extends StatelessWidget {
               bodyColor: Colors.white,
               displayColor: Colors.white
           ),
-          useMaterial3: true,
         ),
       ),
     );
