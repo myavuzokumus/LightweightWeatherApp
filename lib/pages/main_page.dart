@@ -207,7 +207,7 @@ class InfoCard extends StatelessWidget {
         child: InkWell(
           splashColor: Colors.blue.withAlpha(30),
           child: Container(
-            width: 300.w,
+            width: 325.w,
             height: 250,
             padding: const EdgeInsets.all(12),
             child: Column(
@@ -216,24 +216,20 @@ class InfoCard extends StatelessWidget {
                   opacity: 0.7,
                   child: Row(
                     children: [
-                      const Expanded(flex: 2, child: Text("Yesterday")),
-                      SizedBox(width: 20, child: Text("${yesterday.humidity}")),
+                      Expanded(flex: 2, child: Text("Yesterday", style: TextStyle(fontSize: 16.spMin))),
+                      Text("${yesterday.humidity}", style: TextStyle(fontSize: 16.spMin)),
                       Lottie.asset("assets/icons/lottie/humidity.json",
-                          width: 35, animate: false),
-                      const SizedBox(width: 15),
+                          width: 35.spMin, animate: false),
+                      SizedBox(width: 10.spMin),
                       SizedBox(
-                        width: 30,
-                        child: Text("${yesterday.dayTemperature}°"),
+                        width: 65.spMin,
+                        child: Text("${yesterday.dayTemperature}° / ${yesterday.nightTemperature}°", style: TextStyle(fontSize: 16.spMin)),
                       ),
-                      SizedBox(
-                        width: 25,
-                        child: Text("${yesterday.nightTemperature}°"),
-                      ),
-                      const SizedBox(width: 15),
+                      SizedBox(width: 10.spMin),
                       Lottie.asset(yesterday.dayType,
-                          width: 30, animate: false),
+                          width: 30.spMin, animate: false),
                       Lottie.asset(yesterday.nightType,
-                          width: 30, animate: false),
+                          width: 30.spMin, animate: false),
                     ],
                   ),
                 ),
@@ -267,29 +263,21 @@ class InfoCard extends StatelessWidget {
                               Expanded(
                                   flex: 2,
                                   child: Text(dayDetails.dayName,
-                                      style: const TextStyle(
-                                          fontWeight: FontWeight.bold))),
-                              SizedBox(
-                                  width: 20,
-                                  child: Text("${dayDetails.humidity}")),
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold, fontSize: 16.spMin))),
+                              Text("${dayDetails.humidity}", style: TextStyle(fontSize: 16.spMin)),
                               Lottie.asset("assets/icons/lottie/humidity.json",
-                                  width: 35, animate: false),
-                              const SizedBox(width: 15),
+                                  width: 35.spMin, animate: false),
+                              SizedBox(width: 10.spMin),
                               SizedBox(
-                                width: 30,
-                                child: Text("${dayDetails.dayTemperature}°"),
+                                width: 65.spMin,
+                                child: Text("${dayDetails.dayTemperature}° / ${dayDetails.nightTemperature}°", style: TextStyle(fontSize: 16.spMin)),
                               ),
-                              SizedBox(
-                                width: 25,
-                                child: Text(
-                                  "${dayDetails.nightTemperature}°",
-                                ),
-                              ),
-                              const SizedBox(width: 15),
+                              SizedBox(width: 10.spMin),
                               Lottie.asset(dayDetails.dayType,
-                                  width: 30, animate: false),
+                                  width: 30.spMin, animate: false),
                               Lottie.asset(dayDetails.nightType,
-                                  width: 30, animate: false),
+                                  width: 30.spMin, animate: false),
                             ],
                           ),
                         );
