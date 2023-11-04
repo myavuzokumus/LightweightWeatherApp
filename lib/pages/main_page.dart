@@ -69,7 +69,6 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
                   final List<String> cities = cityDataBox.get("cities") ?? <String>[];
 
                   cityCount = cities.length;
-                  //TODO: City deletion will be added.
 
                   return SizedBox(
                     height: cityCount < 11 ? 35 + (cityCount * 50) : 575,
