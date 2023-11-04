@@ -29,7 +29,7 @@ List<String> nextDays({required final String day, required final int nextDay}) {
 
   final int dayIndex = weekDays.indexOf(day);
 
-  List<String> result = [];
+  final List<String> result = [];
 
   for (int i = 0; i < nextDay; i++) {
     result.add(weekDays[(dayIndex + i + 1) % 7]);
