@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import '/pages/addCity.dart';
+import '/pages/add_city.dart';
 
 import 'pages/main_page.dart';
 

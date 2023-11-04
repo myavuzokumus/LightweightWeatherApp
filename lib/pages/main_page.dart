@@ -168,7 +168,7 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
                       Container(
                         width: 512,
                         margin: EdgeInsets.only(
-                            top: 50.h, left: 20, right: 20, bottom: 20),
+                            top: 75.h, left: 20, right: 20, bottom: 20),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -241,7 +241,7 @@ class InfoCard extends StatelessWidget {
                           width: 35.spMin, animate: false),
                       SizedBox(width: 10.spMin),
                       SizedBox(
-                        width: 70.spMin,
+                        width: 75.spMin,
                         child: Text("${yesterday.dayTemperature}° / ${yesterday.nightTemperature}°", style: TextStyle(fontSize: 16.spMin)),
                       ),
                       SizedBox(width: 10.spMin),
@@ -289,7 +289,7 @@ class InfoCard extends StatelessWidget {
                                   width: 35.spMin, animate: false),
                               SizedBox(width: 10.spMin),
                               SizedBox(
-                                width: 70.spMin,
+                                width: 75.spMin,
                                 child: Text("${dayDetails.dayTemperature}° / ${dayDetails.nightTemperature}°", style: TextStyle(fontSize: 16.spMin)),
                               ),
                               SizedBox(width: 10.spMin),
