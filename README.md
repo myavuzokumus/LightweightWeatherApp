@@ -3,6 +3,10 @@
 This is my first Flutter project that I developed with Backend.
 Django is used in the background of this simple and easy to use Weather app.
 
+<div align="center">
+    <img src="./assets/WeatherAppSS.png" height="512"/>
+  </div>
+
 ## Installation
 
 1. Create a new Flutter project:
