@@ -241,7 +241,13 @@ class InfoCard extends StatelessWidget {
 
                         return InkWell(
                           onTap: () {
-                            debugPrint('Card tapped.');
+
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                content: Text("Redirecting to site about that day's weather information...")
+                                )
+                            );
+
                           },
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
