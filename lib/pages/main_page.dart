@@ -222,7 +222,7 @@ class InfoCard extends StatelessWidget {
                           width: 35.spMin, animate: false),
                       SizedBox(width: 10.spMin),
                       SizedBox(
-                        width: 65.spMin,
+                        width: 70.spMin,
                         child: Text("${yesterday.dayTemperature}° / ${yesterday.nightTemperature}°", style: TextStyle(fontSize: 16.spMin)),
                       ),
                       SizedBox(width: 10.spMin),
@@ -270,7 +270,7 @@ class InfoCard extends StatelessWidget {
                                   width: 35.spMin, animate: false),
                               SizedBox(width: 10.spMin),
                               SizedBox(
-                                width: 65.spMin,
+                                width: 70.spMin,
                                 child: Text("${dayDetails.dayTemperature}° / ${dayDetails.nightTemperature}°", style: TextStyle(fontSize: 16.spMin)),
                               ),
                               SizedBox(width: 10.spMin),

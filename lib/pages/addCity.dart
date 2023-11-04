@@ -19,6 +19,12 @@ class _AddCityState extends State<AddCity> {
   int foundedCityCount = 0;
 
   @override
+  void dispose() {
+    super.dispose();
+    searchTextController.dispose();
+  }
+
+  @override
   Widget build(final BuildContext context) {
     return Scaffold(
       appBar: AppBar(

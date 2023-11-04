@@ -1,6 +1,5 @@
-import 'package:flutter/foundation.dart';
-
 import 'package:bitsdojo_window/bitsdojo_window.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -38,6 +37,9 @@ class WeatherApp extends StatelessWidget {
   @override
   Widget build(final BuildContext context) {
     return ScreenUtilInit(
+      designSize: const Size(360, 690),
+      minTextAdapt: true,
+      ensureScreenSize: true,
       child: MaterialApp(
         title: "Lightweight Weather App",
         initialRoute: '/',
