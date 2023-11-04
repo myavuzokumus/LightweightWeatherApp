@@ -66,44 +66,57 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
                     Hive.box('selectedCities').listenable(keys: ["cities"]),
                 builder: (final BuildContext context, final Box<dynamic> value,
                     final Widget? child) {
-                  final List<String>? cities = cityDataBox.get("cities");
+                  final List<String> cities = cityDataBox.get("cities") ?? <String>[];
 
-                  cityCount = cities?.length ?? 0;
-
+                  cityCount = cities.length;
                   //TODO: City deletion will be added.
 
                   return SizedBox(
                     height: cityCount < 11 ? 35 + (cityCount * 50) : 575,
-                    child: cities == null
+                    child: cityCount == 0
                         ? const Text("No city added yet.")
                         : ListView.builder(
                             itemCount: cities.length,
                             itemExtent: 50,
                             itemBuilder:
                                 (final BuildContext context, final int index) {
-                              return ListTile(
-                                titleAlignment: ListTileTitleAlignment.center,
-                                leading: const Padding(
-                                  padding: EdgeInsets.only(left: 30),
-                                  child: Icon(
-                                    Icons.location_city,
-                                  ),
-                                ),
-                                title: Padding(
-                                  padding: const EdgeInsets.only(right: 15),
-                                  child: Text(cities.elementAt(index)),
-                                ),
-                                selectedColor: Colors.amberAccent,
-                                selected:
-                                    lastSelectedCity == cities.elementAt(index),
-                                onTap: () {
-                                  cityDataBox.put(
-                                      "lastSelected", cities.elementAt(index));
-                                  setState(() {
-                                    lastSelectedCity = cities.elementAt(index);
-                                    Navigator.pop(context);
-                                  });
+
+                              final String city = cities.elementAt(index);
+
+                              return Dismissible(
+                                key: Key(city),
+                                onDismissed: (final direction) async {
+                                  // Remove the item from the data source.
+                                    cities.removeAt(index);
+                                    await cityDataBox.put("cities", cities.toList());
                                 },
+                                // Show a red background as the item is swiped away.
+                                background: Container(color: Colors.red),
+
+                                child: ListTile(
+                                  titleAlignment: ListTileTitleAlignment.center,
+                                  leading: const Padding(
+                                    padding: EdgeInsets.only(left: 30),
+                                    child: Icon(
+                                      Icons.location_city,
+                                    ),
+                                  ),
+                                  title: Padding(
+                                    padding: const EdgeInsets.only(right: 15),
+                                    child: Text(city),
+                                  ),
+                                  selectedColor: Colors.amberAccent,
+                                  selected:
+                                      lastSelectedCity == city,
+                                  onTap: () {
+                                    cityDataBox.put(
+                                        "lastSelected", city);
+                                    setState(() {
+                                      lastSelectedCity = city;
+                                      Navigator.pop(context);
+                                    });
+                                  },
+                                ),
                               );
                             },
                           ),
