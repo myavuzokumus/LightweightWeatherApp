@@ -131,58 +131,77 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
             ],
           ),
         ),
-        body: Container(
-          height: double.infinity,
-          decoration: BoxDecoration(
-              gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              Theme.of(context).colorScheme.inversePrimary,
-              Colors.black,
-            ],
-          )),
-          child: SingleChildScrollView(
-            child: Center(
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
-                    Container(
-                      width: 512,
-                      margin: EdgeInsets.only(
-                          top: 50.h, left: 20, right: 20, bottom: 20),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Flexible(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  '24°',
-                                  style: TextStyle(fontSize: 72.spMin),
-                                ),
-                                Text(
-                                  'Feels 19°',
-                                  style: TextStyle(fontSize: 21.spMin),
-                                ),
-                                Text(
-                                  '25° / 17°',
-                                  style: TextStyle(fontSize: 21.spMin),
-                                ),
-                              ],
+        body: RefreshIndicator(
+          displacement: 75,
+          onRefresh: () async {
+
+            setState(() {
+
+              ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                      content: Text("Page is reloaded.")
+                  )
+              );
+            }
+            );
+
+            return Future<void>.delayed(const Duration(seconds: 3));
+
+          },
+          child: Container(
+            height: double.infinity,
+            decoration: BoxDecoration(
+                gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                Theme.of(context).colorScheme.inversePrimary,
+                Colors.black,
+              ],
+            )),
+            child: SingleChildScrollView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              child: Center(
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      Container(
+                        width: 512,
+                        margin: EdgeInsets.only(
+                            top: 50.h, left: 20, right: 20, bottom: 20),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Flexible(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    '24°',
+                                    style: TextStyle(fontSize: 72.spMin),
+                                  ),
+                                  Text(
+                                    'Feels 19°',
+                                    style: TextStyle(fontSize: 21.spMin),
+                                  ),
+                                  Text(
+                                    '25° / 17°',
+                                    style: TextStyle(fontSize: 21.spMin),
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                          Flexible(
-                            child: Lottie.asset(
-                                'assets/icons/lottie/clear-day.json'),
-                          ),
-                        ],
+                            Flexible(
+                              child: Lottie.asset(
+                                  'assets/icons/lottie/clear-day.json'),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                    InfoCard()
-                  ]),
+                      InfoCard()
+                    ]),
+              ),
             ),
           ),
         ));
