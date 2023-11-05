@@ -63,107 +63,15 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
         // the App.build method, and use it to set our appbar title.
         title: Center(child: Text(lastSelectedCity)),
       ),
-      drawer: Drawer(
-        width: 275,
-        backgroundColor: const Color(0xFF123252).withOpacity(0.75),
-        elevation: 10.0,
-        child: Column(
-          children: [
-            Container(
-              height: 75,
-            ),
-            ValueListenableBuilder<Box>(
-              valueListenable:
-                  Hive.box('selectedCities').listenable(keys: ["cities"]),
-              builder: (final BuildContext context, final Box<dynamic> value,
-                  final Widget? child) {
-                final List<String> cities =
-                    cityDataBox.get("cities") ?? <String>[];
+      drawer: Sidebar(context),
 
-                final int cityCount = cities.length;
-
-                return SizedBox(
-                  height: cityCount < 11 ? 35 + (cityCount * 50) : 575,
-                  child: cityCount == 0
-                      ? const Text("No city added yet.")
-                      : ListView.builder(
-                          itemCount: cities.length,
-                          itemExtent: 50,
-                          itemBuilder:
-                              (final BuildContext context, final int index) {
-                            final String city = cities.elementAt(index);
-
-                            return Dismissible(
-                              key: Key(city),
-                              onDismissed: (final direction) async {
-                                // Remove the item from the data source.
-                                cities.removeAt(index);
-                                await cityDataBox.put(
-                                    "cities", cities.toList());
-                                if (cities.isNotEmpty) {
-                                  await cityDataBox.put(
-                                      "lastSelected", cities.first);
-                                }
-                                else {
-                                  await cityDataBox.put(
-                                      "lastSelected", null);
-                                }
-
-                                setState(() {
-                                  if (cities.isNotEmpty) {
-                                    lastSelectedCity = cities.first;
-                                  } else {
-                                    lastSelectedCity = "Select City";
-                                  }
-                                });
-                              },
-                              // Show a red background as the item is swiped away.
-                              background: Container(color: Colors.red),
-
-                              child: ListTile(
-                                titleAlignment: ListTileTitleAlignment.center,
-                                leading: const Padding(
-                                  padding: EdgeInsets.only(left: 30),
-                                  child: Icon(
-                                    Icons.location_city,
-                                  ),
-                                ),
-                                title: Padding(
-                                  padding: const EdgeInsets.only(right: 15),
-                                  child: Text(city),
-                                ),
-                                selectedColor: Colors.green.shade200,
-                                selected: lastSelectedCity == city,
-                                onTap: () {
-                                  cityDataBox.put("lastSelected", city);
-                                  setState(() {
-                                    lastSelectedCity = city;
-                                    Navigator.pop(context);
-                                  });
-                                },
-                              ),
-                            );
-                          },
-                        ),
-                );
-              },
-            ),
-            FilledButton.tonalIcon(
-                label: const Text('Add city'),
-                onPressed: () {
-                  Navigator.pushNamed(context, '/addCity');
-                },
-                icon: const Icon(Icons.add)),
-          ],
-        ),
-      ),
       body: RefreshIndicator(
         displacement: 75,
         onRefresh: () async {
-          setState(() {});
 
           await Future<void>.delayed(const Duration(seconds: 2));
 
+          setState(() {});
           ScaffoldMessenger.of(context)
               .showSnackBar(const SnackBar(content: Text("Page is reloaded.")));
         },
@@ -256,6 +164,103 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
                 ),
               ),
         ]),
+      ),
+    );
+  }
+
+  Drawer Sidebar(BuildContext context) {
+    return Drawer(
+      width: 275,
+      backgroundColor: const Color(0xFF123252).withOpacity(0.75),
+      elevation: 10.0,
+      child: Column(
+        children: [
+          Container(
+            height: 75,
+          ),
+          ValueListenableBuilder<Box>(
+            valueListenable:
+                Hive.box('selectedCities').listenable(keys: ["cities"]),
+            builder: (final BuildContext context, final Box<dynamic> value,
+                final Widget? child) {
+              final List<String> cities =
+                  cityDataBox.get("cities") ?? <String>[];
+
+              final int cityCount = cities.length;
+
+              return SizedBox(
+                height: cityCount < 11 ? 35 + (cityCount * 50) : 575,
+                child: cityCount == 0
+                    ? const Text("No city added yet.")
+                    : ListView.builder(
+                        itemCount: cities.length,
+                        itemExtent: 50,
+                        itemBuilder:
+                            (final BuildContext context, final int index) {
+                          final String city = cities.elementAt(index);
+
+                          return Dismissible(
+                            key: Key(city),
+                            onDismissed: (final direction) async {
+                              // Remove the item from the data source.
+                              cities.removeAt(index);
+                              await cityDataBox.put(
+                                  "cities", cities.toList());
+                              if (cities.isNotEmpty) {
+                                await cityDataBox.put(
+                                    "lastSelected", cities.first);
+                              }
+                              else {
+                                await cityDataBox.put(
+                                    "lastSelected", null);
+                              }
+
+                              setState(() {
+                                if (cities.isNotEmpty) {
+                                  lastSelectedCity = cities.first;
+                                } else {
+                                  lastSelectedCity = "Select City";
+                                }
+                              });
+                            },
+                            // Show a red background as the item is swiped away.
+                            background: Container(color: Colors.red),
+
+                            child: ListTile(
+                              titleAlignment: ListTileTitleAlignment.center,
+                              leading: const Padding(
+                                padding: EdgeInsets.only(left: 30),
+                                child: Icon(
+                                  Icons.location_city,
+                                ),
+                              ),
+                              title: Padding(
+                                padding: const EdgeInsets.only(right: 15),
+                                child: Text(city),
+                              ),
+                              selectedColor: Colors.green.shade200,
+                              selected: lastSelectedCity == city,
+                              onTap: () {
+                                cityDataBox.put("lastSelected", city);
+                                setState(() {
+                                  lastSelectedCity = city;
+                                  Navigator.pop(context);
+                                });
+                              },
+                            ),
+                          );
+                        },
+                      ),
+              );
+            },
+          ),
+          FilledButton.tonalIcon(
+              label: const Text('Add city'),
+              onPressed: () {
+                Navigator.pushNamed(context, '/addCity');
+              },
+              icon: const Icon(Icons.add)),
+        ],
       ),
     );
   }
