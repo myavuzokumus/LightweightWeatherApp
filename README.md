@@ -4,6 +4,7 @@
 | Image | Description |
 | --- | --- |
 | ![](/assets/layout2.png) | This is my first Flutter project that I developed with Backend. Django is used in the background of this simple and easy to use Weather app. |
+
 ![](/assets/layout1.png)
 
 
