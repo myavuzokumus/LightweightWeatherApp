@@ -16,13 +16,10 @@ class WeatherHomePage extends StatefulWidget {
   State<WeatherHomePage> createState() => _WeatherHomePageState();
 }
 
-//TODO: Controller düzeltilecek.
 //TODO: Drawer yeniden yapılacak.
 //TODO: Ekran boyu değişince yenilenmesi kapatılacak.
 
 class _WeatherHomePageState extends State<WeatherHomePage> {
-  static int cityCount = 0;
-
   String lastSelectedCity = cityDataBox.get("lastSelected") ?? "Select City";
 
   @override
@@ -80,7 +77,7 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
                 final List<String> cities =
                     cityDataBox.get("cities") ?? <String>[];
 
-                cityCount = cities.length;
+                final int cityCount = cities.length;
 
                 return SizedBox(
                   height: cityCount < 11 ? 35 + (cityCount * 50) : 575,
@@ -164,17 +161,17 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
           return Future<void>.delayed(const Duration(seconds: 3));
         },
         child: Stack(
-          children: [
-        Positioned(
-          bottom: -125,
-          left: -200,
-          child: Opacity(
-            opacity: 0.2,
-            child: Lottie.asset(
-                backgroundSplash(weatherInfo.currentWeather), width: 512),
+            children: [
+          Positioned(
+            bottom: -125,
+            left: -200,
+            child: Opacity(
+              opacity: 0.2,
+              child: Lottie.asset(backgroundSplash(weatherInfo.currentWeather),
+                  width: 512),
+            ),
           ),
-        ),
-            Container(
+          Container(
             height: double.infinity,
             decoration: BoxDecoration(
                 gradient: LinearGradient(
@@ -208,12 +205,15 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
                               ),
                               Text(
                                 weatherInfo.currentWeather,
-                                style: TextStyle(fontSize: 24.spMin, height: 1.5),
+                                style:
+                                    TextStyle(fontSize: 24.spMin, height: 1.5),
                               ),
                               Text(
                                 '${weatherInfo.dayTemperature}° / ${weatherInfo.nightTemperature}°'
                                 '\nFeels like ${weatherInfo.feelsLike}°',
-                                style: TextStyle(fontSize: 14.spMin, color: Colors.white.withOpacity(0.7)),
+                                style: TextStyle(
+                                    fontSize: 14.spMin,
+                                    color: Colors.white.withOpacity(0.7)),
                               ),
                             ],
                           ),
@@ -221,7 +221,8 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
                       ),
                       Flexible(
                         child: Lottie.asset(
-                            getIconOfWeather(weatherInfo.currentWeather, "09:00"),
+                            getIconOfWeather(
+                                weatherInfo.currentWeather, "09:00"),
                             width: 256),
                       ),
                     ],
@@ -236,7 +237,9 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
                       DailyStatusCard(
                         weatherInfo: weatherInfo,
                       ),
-                      isScreenWide ? const SizedBox(width: 25) : const SizedBox(width: 0),
+                      isScreenWide
+                          ? const SizedBox(width: 25)
+                          : const SizedBox(width: 0),
                       NextDaysCard(weatherInfo: weatherInfo),
                     ],
                   )
@@ -244,8 +247,7 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
               ),
             ),
           ),
-        ].reversed.toList()
-        ),
+        ].reversed.toList()),
       ),
     );
   }
@@ -260,37 +262,47 @@ class DailyStatusCard extends StatelessWidget {
 
   final String currentTime = getTime();
 
-  final ScrollController _controller = ScrollController();
+  final ScrollController _scrollController = ScrollController();
 
   @override
   Widget build(final BuildContext context) {
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (_scrollController.hasClients) {
+        _scrollController.animateTo(hours.indexOf(currentTime).toDouble() * 76,
+            duration: const Duration(seconds: 1), curve: Curves.easeOut);
+      }
+    });
 
     return Container(
       width: 425,
       height: 150,
       margin: EdgeInsets.only(top: 25.h, bottom: 5.h),
       child: ListView.builder(
-          controller: _controller,
+          controller: _scrollController,
           scrollDirection: Axis.horizontal,
           itemCount: hours.length,
           itemBuilder: (final BuildContext context, final int index) {
-
-            final HourlyWeather hourDetails = weatherInfo.hour(hours[index]);
+            final HourlyWeather hourDetails =
+                weatherInfo.hour(hours[index]);
 
             return Card(
               color: Colors.indigo.withOpacity(0.25),
               clipBehavior: Clip.hardEdge,
               child: InkWell(
                   child: Container(
-                    width: 75,
-                    padding: const EdgeInsets.all(3),
-                    color: currentTime == hours[index] ? Colors.indigo.shade300 : Colors.transparent,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(hours[index]),
-                        Lottie.asset(getIconOfWeather(hourDetails.weatherType, hours[index])),
-                        Text("${hourDetails.temperature}°"),
+                width: 75,
+                padding: const EdgeInsets.all(3),
+                color: currentTime == hours[index]
+                    ? Colors.indigo.shade300
+                    : Colors.transparent,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(hours[index]),
+                    Lottie.asset(getIconOfWeather(
+                        hourDetails.weatherType, hours[index])),
+                    Text("${hourDetails.temperature}°"),
                   ],
                 ),
               )),
