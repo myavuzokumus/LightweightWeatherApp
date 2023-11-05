@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 final List<String> hours = <String>[
   "00:00",
   "01:00",
@@ -36,6 +38,55 @@ final List<String> weekDays = [
 ];
 
 String getIconOfWeather(final String type, final String hour) {
+  final int newHour = int.parse(hour.substring(0,2));
+  switch (type) {
+    case "Sunny":
+      if (newHour > 6 && newHour < 19) {
+        return "assets/icons/lottie/clear-day.json";
+      } else {
+        return "assets/icons/lottie/clear-night.json";
+      }
+    case "Cloudy":
+      return "assets/icons/lottie/cloudy.json";
+    case "Rainy":
+      return "assets/icons/lottie/overcast-rain.json";
+    case "Snowy":
+      return "assets/icons/lottie/overcast-snow.json";
+
+    default:
+      return "assets/icons/lottie/clear-day.json";
+  }
+}
+
+List<Color> backgroundColor(final String type) {
+
+  List<Color> result = [];
+
+  switch (type) {
+    case "Cloudy":
+      return result = [
+        const Color(0xFFd4dde8),
+        const Color(0xFFd4dde8)
+      ];
+    case "Rainy":
+      return result = [
+        const Color(0xFF1b4978),
+        const Color(0xFF123252)
+      ];
+    case "Snowy":
+      return result = [
+        const Color(0xFF6f747c),
+        const Color(0xFF414449)
+      ];
+    default:
+      return result = [
+        const Color(0xFF53d0ff),
+        const Color(0xFF43a8cd)
+      ];
+  }
+}
+
+String getAnimationOfWeather(final String type, final String hour) {
   final int newHour = int.parse(hour.substring(0,2));
   switch (type) {
     case "Sunny":

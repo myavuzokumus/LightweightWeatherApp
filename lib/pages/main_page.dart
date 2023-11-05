@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:lottie/lottie.dart';
 
+import '../custom_widgets/animated_background.dart';
 import '../main.dart';
 import '../models/daily_weather.dart';
 import '../models/hourly_weather.dart';
@@ -15,6 +16,10 @@ class WeatherHomePage extends StatefulWidget {
   @override
   State<WeatherHomePage> createState() => _WeatherHomePageState();
 }
+
+//TODO: Controller düzeltilecek.
+//TODO: Drawer yeniden yapılacak.
+//TODO: Ekran boyu değişince yenilenmesi kapatılacak.
 
 class _WeatherHomePageState extends State<WeatherHomePage> {
   static int cityCount = 0;
@@ -169,8 +174,7 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
             colors: [
               Colors.blue.shade100,
               Colors.blue.shade300,
-              const Color(0xFF1b4978),
-              const Color(0xFF123252)
+              ...backgroundColor(weatherInfo.currentWeather)
             ],
           )),
           child: SingleChildScrollView(
@@ -223,7 +227,7 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
                       weatherInfo: weatherInfo,
                     ),
                     isScreenWide ? const SizedBox(width: 25) : const SizedBox(width: 0),
-                    NextDaysCard(weatherInfo: weatherInfo)
+                    NextDaysCard(weatherInfo: weatherInfo),
                   ],
                 )
               ]),
