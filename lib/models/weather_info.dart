@@ -32,9 +32,8 @@ class WeatherInfo {
 
 
   WeatherInfo(this.city) {
-    // Şehre göre hava durumu bilgileri alınıyor
-    // Bu kısım gerçek bir API kullanarak yapılabilir
-    // Burada basitçe rasgele değerler atıyorum
+    // Here the values will be retrieved via API.
+    // Random values are currently generated.
     instantTemperature = 10 + Random().nextInt(20);
     feelsLike = 5 + Random().nextInt(20);
     dayTemperature = 5 + Random().nextInt(10);
@@ -43,14 +42,14 @@ class WeatherInfo {
     currentWeather = ["Sunny", "Cloudy", "Rainy", "Snowy"][Random().nextInt(4)];
   }
 
-  // Day metodu tanımlanıyor
-  // Bu metod, o günün hava durumu bilgilerini içeren bir GunlukHavaDurumu classı döndürüyor
+  // Day method is defined
+  // This method returns a DailyWeather class containing that day's weather information
   DailyWeather day(final String day) {
     return DailyWeather(city, day);
   }
 
-  // Hour metodu tanımlanıyor
-  // Bu metod, o saatin hava durumu bilgilerini içeren bir SaatlikHavaDurumu classı döndürüyor
+  // Hour method is defined
+  // This method returns an HourlyWeather class containing the weather information for that hour
   HourlyWeather hour(final String hour) {
     return HourlyWeather(city, hour);
   }

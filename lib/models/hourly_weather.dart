@@ -7,11 +7,9 @@ class HourlyWeather extends WeatherInfo {
   late int temperature;
   late String weatherType;
 
-  // Yapıcı metod tanımlanıyor
   HourlyWeather(final String city, this.hourTemp) : super(city) {
-    // Şehir ve saate göre hava durumu bilgileri alınıyor
-    // Bu kısım gerçek bir API kullanarak yapılabilir
-    // Burada basitçe rasgele değerler atıyorum
+    // Here the values will be retrieved via API.
+    // Random values are currently generated.
     temperature = 10 + Random().nextInt(20);
     weatherType = ["Sunny", "Cloudy", "Rainy", "Snowy"][Random().nextInt(4)];
   }

@@ -196,7 +196,7 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
                 physics: const AlwaysScrollableScrollPhysics(),
                 child: Container(
                   margin:
-                  EdgeInsets.only(top: 75.h, left: 20, right: 20, bottom: 20),
+                  EdgeInsets.only(top: 75.h, left: 10.w, right: 10.w, bottom: 20),
                   child: Column(children: <Widget>[
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -348,6 +348,7 @@ class NextDaysCard extends StatelessWidget {
                 Opacity(
                   opacity: 0.7,
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Expanded(
                           flex: 2,
@@ -357,14 +358,14 @@ class NextDaysCard extends StatelessWidget {
                           style: TextStyle(fontSize: 16.spMin)),
                       Lottie.asset("assets/icons/lottie/humidity.json",
                           width: 35.spMin, animate: false),
-                      SizedBox(width: 10.spMin),
+                      SizedBox(width: 6.w),
                       SizedBox(
                         width: 75.spMin,
                         child: Text(
                             "${yesterday.dayTemperature}° / ${yesterday.nightTemperature}°",
                             style: TextStyle(fontSize: 16.spMin)),
                       ),
-                      SizedBox(width: 10.spMin),
+                      SizedBox(width: 5.w),
                       Lottie.asset(
                           getIconOfWeather(yesterday.dayWeather, "09:00"),
                           width: 30.spMin,
@@ -399,7 +400,7 @@ class NextDaysCard extends StatelessWidget {
                                         "Redirecting to site about that day's weather information...")));
                           },
                           child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
                               Expanded(
                                   flex: 2,
@@ -411,14 +412,14 @@ class NextDaysCard extends StatelessWidget {
                                   style: TextStyle(fontSize: 16.spMin)),
                               Lottie.asset("assets/icons/lottie/humidity.json",
                                   width: 35.spMin, animate: false),
-                              SizedBox(width: 10.spMin),
+                              SizedBox(width: 5.w),
                               SizedBox(
                                 width: 75.spMin,
                                 child: Text(
                                     "${dayDetails.dayTemperature}° / ${dayDetails.nightTemperature}°",
                                     style: TextStyle(fontSize: 16.spMin)),
                               ),
-                              SizedBox(width: 10.spMin),
+                              SizedBox(width: 5.w),
                               Lottie.asset(
                                   getIconOfWeather(
                                       dayDetails.dayWeather, "09:00"),

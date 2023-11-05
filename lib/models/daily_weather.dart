@@ -3,7 +3,7 @@ import 'dart:math';
 import 'weather_info.dart';
 
 class DailyWeather extends WeatherInfo {
-  // Özellikler tanımlanıyor
+
   String dayTemp;
   @override
   late int humidity;
@@ -15,9 +15,8 @@ class DailyWeather extends WeatherInfo {
   late String nightWeather;
 
   DailyWeather(final String city, this.dayTemp) : super(city) {
-    // Şehir ve güne göre hava durumu bilgileri alınıyor
-    // Bu kısım gerçek bir API kullanarak yapılabilir
-    // Burada basitçe rasgele değerler atıyorum
+    // Here the values will be retrieved via API.
+    // Random values are currently generated.
     humidity = 50 + Random().nextInt(50);
     dayTemperature = 5 + Random().nextInt(10);
     nightTemperature = 10 + Random().nextInt(10);
