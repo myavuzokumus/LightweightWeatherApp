@@ -17,13 +17,15 @@ class WeatherHomePage extends StatefulWidget {
 }
 
 //TODO: Drawer yeniden yapılacak.
-//TODO: Ekran boyu değişince yenilenmesi kapatılacak.
 
 class _WeatherHomePageState extends State<WeatherHomePage> {
   String lastSelectedCity = cityDataBox.get("lastSelected") ?? "Select City";
 
+
+
   @override
   Widget build(final BuildContext context) {
+
     final weatherInfo = WeatherInfo(lastSelectedCity);
 
     final bool isScreenWide = MediaQuery.of(context).size.width >= 960;
@@ -63,7 +65,8 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
       ),
       drawer: Drawer(
         width: 275,
-        backgroundColor: Colors.indigo.withOpacity(0.75),
+        backgroundColor: Color(0xFF123252).withOpacity(0.75),
+        elevation: 10.0,
         child: Column(
           children: [
             Container(
@@ -101,6 +104,10 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
                                   await cityDataBox.put(
                                       "lastSelected", cities.first);
                                 }
+                                else {
+                                  await cityDataBox.put(
+                                      "lastSelected", null);
+                                }
 
                                 setState(() {
                                   if (cities.isNotEmpty) {
@@ -125,7 +132,7 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
                                   padding: const EdgeInsets.only(right: 15),
                                   child: Text(city),
                                 ),
-                                selectedColor: Colors.amberAccent,
+                                selectedColor: Colors.green.shade200,
                                 selected: lastSelectedCity == city,
                                 onTap: () {
                                   cityDataBox.put("lastSelected", city);
@@ -180,7 +187,7 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
             bottom: -125,
             left: -200,
             child: Opacity(
-              opacity: 0.2,
+              opacity: 0.25,
               child: Lottie.asset(backgroundSplash(weatherInfo.currentWeather),
                   width: 512),
             ),
