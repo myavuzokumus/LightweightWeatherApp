@@ -1,11 +1,11 @@
 # WeatherApp
 
-This is my first Flutter project that I developed with Backend.
-Django is used in the background of this simple and easy to use Weather app.
 
-<div align="center">
-    <img src="./assets/WeatherAppSS.png" height="512"/>
-  </div>
+| Image | Description |
+| --- | --- |
+| ![](/assets/layout2.png) | This is my first Flutter project that I developed with Backend. Django is used in the background of this simple and easy to use Weather app. |
+<img src="./assets/layout1.png" height="512"/>
+
 
 ## Installation
 
@@ -29,3 +29,7 @@ flutter run
 - [hive](https://pub.dev/packages/hive) - Save for the user’s selected city in device’s storage.
 - [lottie](https://pub.dev/packages/lottie) - To use animated icons in an app.
 - [screenutil](https://pub.dev/packages/flutter_screenutil) - To make a responsive design for an app.
+
+## License
+
+This project is licensed under the [MIT License](/LICENSE).
