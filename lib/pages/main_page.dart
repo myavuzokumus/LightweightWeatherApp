@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:lottie/lottie.dart';
 
-import '../custom_widgets/animated_background.dart';
 import '../main.dart';
 import '../models/daily_weather.dart';
 import '../models/hourly_weather.dart';
@@ -164,75 +163,88 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
 
           return Future<void>.delayed(const Duration(seconds: 3));
         },
-        child: Container(
-          height: double.infinity,
-          decoration: BoxDecoration(
-              gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            stops: const [0.05, 0.15, 0.6, 0.85],
-            colors: [
-              Colors.blue.shade100,
-              Colors.blue.shade300,
-              ...backgroundColor(weatherInfo.currentWeather)
-            ],
-          )),
-          child: SingleChildScrollView(
-            physics: const AlwaysScrollableScrollPhysics(),
-            child: Container(
-              margin:
-                  EdgeInsets.only(top: 75.h, left: 20, right: 20, bottom: 20),
-              child: Column(children: <Widget>[
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Flexible(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            '${weatherInfo.instantTemperature}°',
-                            style: TextStyle(fontSize: 72.spMin),
+        child: Stack(
+          children: [
+        Positioned(
+          bottom: -125,
+          left: -200,
+          child: Opacity(
+            opacity: 0.2,
+            child: Lottie.asset(
+                backgroundSplash(weatherInfo.currentWeather), width: 512),
+          ),
+        ),
+            Container(
+            height: double.infinity,
+            decoration: BoxDecoration(
+                gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              stops: const [0.05, 0.15, 0.6, 0.85],
+              colors: [
+                Colors.blue.shade100,
+                Colors.blue.shade300,
+                ...backgroundColor(weatherInfo.currentWeather)
+              ],
+            )),
+            child: SingleChildScrollView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              child: Container(
+                margin:
+                    EdgeInsets.only(top: 75.h, left: 20, right: 20, bottom: 20),
+                child: Column(children: <Widget>[
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Flexible(
+                        child: Padding(
+                          padding: EdgeInsets.only(top: 28.h),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                '${weatherInfo.instantTemperature}°',
+                                style: TextStyle(fontSize: 58.spMin, height: 1),
+                              ),
+                              Text(
+                                weatherInfo.currentWeather,
+                                style: TextStyle(fontSize: 24.spMin, height: 1.5),
+                              ),
+                              Text(
+                                '${weatherInfo.dayTemperature}° / ${weatherInfo.nightTemperature}°'
+                                '\nFeels like ${weatherInfo.feelsLike}°',
+                                style: TextStyle(fontSize: 14.spMin, color: Colors.white.withOpacity(0.7)),
+                              ),
+                            ],
                           ),
-                          Text(
-                            weatherInfo.currentWeather,
-                            style: TextStyle(fontSize: 36.spMin),
-                          ),
-                          Text(
-                            '${weatherInfo.dayTemperature}° / ${weatherInfo.nightTemperature}°',
-                            style: TextStyle(fontSize: 18.spMin),
-                          ),
-                          Text(
-                            'Feels like ${weatherInfo.feelsLike}°',
-                            style: TextStyle(fontSize: 18.spMin),
-                          ),
-                        ],
+                        ),
                       ),
-                    ),
-                    Flexible(
-                      child: Lottie.asset(
-                          getIconOfWeather(weatherInfo.currentWeather, "09:00"),
-                          width: 256),
-                    ),
-                  ],
-                ),
-                Flex(
-                  crossAxisAlignment: isScreenWide
-                      ? CrossAxisAlignment.start
-                      : CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  direction: isScreenWide ? Axis.horizontal : Axis.vertical,
-                  children: [
-                    DailyStatusCard(
-                      weatherInfo: weatherInfo,
-                    ),
-                    isScreenWide ? const SizedBox(width: 25) : const SizedBox(width: 0),
-                    NextDaysCard(weatherInfo: weatherInfo),
-                  ],
-                )
-              ]),
+                      Flexible(
+                        child: Lottie.asset(
+                            getIconOfWeather(weatherInfo.currentWeather, "09:00"),
+                            width: 256),
+                      ),
+                    ],
+                  ),
+                  Flex(
+                    crossAxisAlignment: isScreenWide
+                        ? CrossAxisAlignment.start
+                        : CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    direction: isScreenWide ? Axis.horizontal : Axis.vertical,
+                    children: [
+                      DailyStatusCard(
+                        weatherInfo: weatherInfo,
+                      ),
+                      isScreenWide ? const SizedBox(width: 25) : const SizedBox(width: 0),
+                      NextDaysCard(weatherInfo: weatherInfo),
+                    ],
+                  )
+                ]),
+              ),
             ),
           ),
+        ].reversed.toList()
         ),
       ),
     );
@@ -253,9 +265,10 @@ class DailyStatusCard extends StatelessWidget {
   @override
   Widget build(final BuildContext context) {
 
-    return SizedBox(
+    return Container(
       width: 425,
       height: 150,
+      margin: EdgeInsets.only(top: 25.h, bottom: 5.h),
       child: ListView.builder(
           controller: _controller,
           scrollDirection: Axis.horizontal,
@@ -277,7 +290,7 @@ class DailyStatusCard extends StatelessWidget {
                       children: [
                         Text(hours[index]),
                         Lottie.asset(getIconOfWeather(hourDetails.weatherType, hours[index])),
-                        Text(hourDetails.temperature.toString()),
+                        Text("${hourDetails.temperature}°"),
                   ],
                 ),
               )),

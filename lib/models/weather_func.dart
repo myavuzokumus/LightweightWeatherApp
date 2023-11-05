@@ -58,6 +58,21 @@ String getIconOfWeather(final String type, final String hour) {
   }
 }
 
+String backgroundSplash(final String type) {
+  switch (type) {
+    case "Sunny":
+      return "assets/icons/lottie/rainbow-clear.json";
+    case "Cloudy":
+      return "assets/icons/lottie/cloudy.json";
+    case "Rainy":
+      return "assets/icons/lottie/raindrops.json";
+    case "Snowy":
+      return "assets/icons/lottie/snowman.json";
+    default:
+      return "assets/icons/lottie/clear-day.json";
+  }
+}
+
 List<Color> backgroundColor(final String type) {
 
   List<Color> result = [];
