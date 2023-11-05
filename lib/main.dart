@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -47,7 +49,13 @@ class WeatherApp extends StatelessWidget {
           '/': (final context) => const WeatherHomePage(),
           '/addCity': (final context) => const AddCity(),
         },
-        theme: ThemeData(
+        scrollBehavior: MaterialScrollBehavior().copyWith(
+          dragDevices: {
+            PointerDeviceKind.mouse,
+            PointerDeviceKind.touch,
+          }),
+
+          theme: ThemeData(
           useMaterial3: true,
           listTileTheme: const ListTileThemeData(
               textColor: Colors.white, iconColor: Colors.white),
