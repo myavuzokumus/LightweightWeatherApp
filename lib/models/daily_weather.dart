@@ -5,8 +5,11 @@ import 'weather_info.dart';
 class DailyWeather extends WeatherInfo {
   // Özellikler tanımlanıyor
   String dayTemp;
+  @override
   late int humidity;
+  @override
   late int dayTemperature;
+  @override
   late int nightTemperature;
   late String dayWeather;
   late String nightWeather;
