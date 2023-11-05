@@ -65,7 +65,7 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
       ),
       drawer: Drawer(
         width: 275,
-        backgroundColor: const Color(0xFF123252).withOpacity(0.75),
+        backgroundColor: Color(0xFF123252).withOpacity(0.75),
         elevation: 10.0,
         child: Column(
           children: [

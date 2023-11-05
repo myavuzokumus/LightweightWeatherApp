@@ -49,7 +49,7 @@ class WeatherApp extends StatelessWidget {
           '/': (final context) => const WeatherHomePage(),
           '/addCity': (final context) => const AddCity(),
         },
-        scrollBehavior: const MaterialScrollBehavior().copyWith(
+        scrollBehavior: MaterialScrollBehavior().copyWith(
           dragDevices: {
             PointerDeviceKind.mouse,
             PointerDeviceKind.touch,
