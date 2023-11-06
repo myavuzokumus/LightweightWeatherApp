@@ -9,6 +9,8 @@ import '../models/hourly_weather.dart';
 import '../models/weather_func.dart';
 import '../models/weather_info.dart';
 
+bool refreshState = false;
+
 class WeatherHomePage extends StatefulWidget {
   const WeatherHomePage({super.key});
 
@@ -16,17 +18,25 @@ class WeatherHomePage extends StatefulWidget {
   State<WeatherHomePage> createState() => _WeatherHomePageState();
 }
 
-//TODO: Drawer yeniden yapılacak.
-
 class _WeatherHomePageState extends State<WeatherHomePage> {
-  String lastSelectedCity = cityDataBox.get("lastSelected") ?? "Select City";
 
+  late WeatherInfo weatherInfo;
+  late String currentTime;
+  late String lastSelectedCity;
+
+  @override
+  void initState() {
+
+    currentTime = getTime();
+    lastSelectedCity = cityDataBox.get("lastSelected") ?? "Select City";
+    weatherInfo =  WeatherInfo(lastSelectedCity);
+
+    super.initState();
+  }
 
 
   @override
   Widget build(final BuildContext context) {
-
-    final weatherInfo = WeatherInfo(lastSelectedCity);
 
     final bool isScreenWide = MediaQuery.of(context).size.width >= 960;
 
@@ -63,7 +73,7 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
         // the App.build method, and use it to set our appbar title.
         title: Center(child: Text(lastSelectedCity)),
       ),
-      drawer: Sidebar(context),
+      drawer: sidebar(context),
 
       body: RefreshIndicator(
         displacement: 75,
@@ -71,9 +81,17 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
 
           await Future<void>.delayed(const Duration(seconds: 2));
 
-          setState(() {});
-          ScaffoldMessenger.of(context)
+          setState(() {
+
+            weatherInfo = WeatherInfo(lastSelectedCity);
+            refreshState = true;
+
+          });
+          if (mounted) {
+            ScaffoldMessenger.of(context)
               .showSnackBar(const SnackBar(content: Text("Page is reloaded.")));
+          }
+
         },
         child: Stack(
             children: [
@@ -96,7 +114,7 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
             left: -200,
             child: Opacity(
               opacity: 0.25,
-              child: Lottie.asset(backgroundSplash(weatherInfo.currentWeather),
+              child: Lottie.asset(backgroundSplash(weatherInfo.currentWeather, currentTime),
                   width: 512),
             ),
           ),
@@ -138,7 +156,7 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
                         Flexible(
                           child: Lottie.asset(
                               getIconOfWeather(
-                                  weatherInfo.currentWeather, "09:00"),
+                                  weatherInfo.currentWeather, currentTime),
                               width: 256),
                         ),
                       ],
@@ -150,8 +168,9 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       direction: isScreenWide ? Axis.horizontal : Axis.vertical,
                       children: [
-                        DailyStatusCard(
+                        HourlyStatusCard(
                           weatherInfo: weatherInfo,
+                          currentTime: currentTime,
                         ),
                         if (isScreenWide)
                           const SizedBox(width: 25)
@@ -166,9 +185,10 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
         ]),
       ),
     );
+
   }
 
-  Drawer Sidebar(BuildContext context) {
+  Drawer sidebar(final BuildContext context) {
     return Drawer(
       width: 275,
       backgroundColor: const Color(0xFF123252).withOpacity(0.75),
@@ -221,6 +241,8 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
                                 } else {
                                   lastSelectedCity = "Select City";
                                 }
+                                weatherInfo = WeatherInfo(lastSelectedCity);
+                                refreshState = true;
                               });
                             },
                             // Show a red background as the item is swiped away.
@@ -245,6 +267,8 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
                                 setState(() {
                                   lastSelectedCity = city;
                                   Navigator.pop(context);
+                                  weatherInfo = WeatherInfo(lastSelectedCity);
+                                  refreshState = true;
                                 });
                               },
                             ),
@@ -266,19 +290,54 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
   }
 }
 
-class DailyStatusCard extends StatelessWidget {
-  DailyStatusCard({required this.weatherInfo, super.key});
+class HourlyStatusCard extends StatefulWidget {
+  const HourlyStatusCard({required this.weatherInfo, required this.currentTime, super.key});
 
   final WeatherInfo weatherInfo;
+  final String currentTime;
 
-  final List<String> nextHour = nextHours();
+  @override
+  State<HourlyStatusCard> createState() => _HourlyStatusCardState();
+}
 
-  final String currentTime = getTime();
+class _HourlyStatusCardState extends State<HourlyStatusCard> {
 
-  final ScrollController _scrollController = ScrollController();
+  late final ScrollController _scrollController;
+
+  late List<HourlyWeather> hourlyWeatherDetails;
+
+  late String currentTime;
+
+  List<HourlyWeather> getHoursData() {
+    return hours.map((final e) => widget.weatherInfo.hour(e)).toList();
+  }
+
+  @override
+  void initState() {
+
+    hourlyWeatherDetails = getHoursData();
+    _scrollController = ScrollController();
+    currentTime = widget.currentTime;
+
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(final BuildContext context) {
+
+    if (refreshState == true) {
+      setState(() {
+        hourlyWeatherDetails = getHoursData();
+        currentTime = widget.currentTime;
+      });
+    }
+
     WidgetsBinding.instance.addPostFrameCallback((final _) {
       if (_scrollController.hasClients) {
         _scrollController.animateTo(hours.indexOf(currentTime).toDouble() * 76,
@@ -295,10 +354,9 @@ class DailyStatusCard extends StatelessWidget {
           scrollDirection: Axis.horizontal,
           itemCount: hours.length,
           itemBuilder: (final BuildContext context, final int index) {
-            final HourlyWeather hourDetails = weatherInfo.hour(hours[index]);
 
             return Card(
-              shadowColor: Colors.black, // gölge rengi
+              shadowColor: Colors.black,
               color: Colors.indigo.withOpacity(0.25),
               clipBehavior: Clip.hardEdge,
               child: InkWell(
@@ -315,8 +373,8 @@ class DailyStatusCard extends StatelessWidget {
                       children: [
                         Text(hours[index]),
                         Lottie.asset(getIconOfWeather(
-                            hourDetails.weatherType, hours[index])),
-                        Text("${hourDetails.temperature}°"),
+                            hourlyWeatherDetails[index].weatherType, hours[index])),
+                        Text("${hourlyWeatherDetails[index].temperature}°"),
                       ],
                     ),
                   )),
@@ -326,20 +384,52 @@ class DailyStatusCard extends StatelessWidget {
   }
 }
 
-class NextDaysCard extends StatelessWidget {
-  NextDaysCard({required this.weatherInfo, super.key});
+class NextDaysCard extends StatefulWidget {
+  const NextDaysCard({required this.weatherInfo, super.key});
 
   final WeatherInfo weatherInfo;
 
-  final List<String> nextDay = nextDays(nextDay: 6);
+  @override
+  State<NextDaysCard> createState() => _NextDaysCardState();
+}
+
+class _NextDaysCardState extends State<NextDaysCard> {
+
+  late List<String> nextDay;
+
+  late DailyWeather yesterday;
+
+  late List<DailyWeather> dayDetails;
+
+  List<DailyWeather> getDailyData() {
+    return nextDay.map((final e) => widget.weatherInfo.day(e)).toList();
+  }
+
+  @override
+  void initState() {
+
+    nextDay = nextDays(nextDay: 6);
+    yesterday = widget.weatherInfo.day(nextDay.last);
+    dayDetails = getDailyData();
+
+    super.initState();
+  }
 
   @override
   Widget build(final BuildContext context) {
-    final DailyWeather yesterday = weatherInfo.day(nextDay.last);
+
+    if (refreshState == true) {
+      setState(() {
+        nextDay = nextDays(nextDay: 6);
+        yesterday = widget.weatherInfo.day(nextDay.last);
+        dayDetails = getDailyData();
+        refreshState = false;
+      });
+    }
 
     return Center(
       child: Card(
-        shadowColor: Colors.black, // gölge rengi
+        shadowColor: Colors.black,
         color: Colors.indigo.withOpacity(0.25),
         clipBehavior: Clip.hardEdge,
         child: InkWell(
@@ -393,8 +483,7 @@ class NextDaysCard extends StatelessWidget {
                       itemCount: 5,
                       itemBuilder:
                           (final BuildContext context, final int index) {
-                        final DailyWeather dayDetails =
-                            weatherInfo.day(nextDay[index]);
+
 
                         return InkWell(
                           splashColor: Colors.blue.withAlpha(30),
@@ -413,7 +502,7 @@ class NextDaysCard extends StatelessWidget {
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 16.spMin))),
-                              Text("${dayDetails.humidity}",
+                              Text("${dayDetails[index].humidity}",
                                   style: TextStyle(fontSize: 16.spMin)),
                               Lottie.asset("assets/icons/lottie/humidity.json",
                                   width: 35.spMin, animate: false),
@@ -421,18 +510,18 @@ class NextDaysCard extends StatelessWidget {
                               SizedBox(
                                 width: 75.spMin,
                                 child: Text(
-                                    "${dayDetails.dayTemperature}° / ${dayDetails.nightTemperature}°",
+                                    "${dayDetails[index].dayTemperature}° / ${dayDetails[index].nightTemperature}°",
                                     style: TextStyle(fontSize: 16.spMin)),
                               ),
                               SizedBox(width: 5.w),
                               Lottie.asset(
                                   getIconOfWeather(
-                                      dayDetails.dayWeather, "09:00"),
+                                      dayDetails[index].dayWeather, "09:00"),
                                   width: 30.spMin,
                                   animate: false),
                               Lottie.asset(
                                   getIconOfWeather(
-                                      dayDetails.nightWeather, "19:00"),
+                                      dayDetails[index].nightWeather, "19:00"),
                                   width: 30.spMin,
                                   animate: false),
                             ],

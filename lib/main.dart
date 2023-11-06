@@ -30,11 +30,11 @@ void main() async {
     });
   }
 
-  runApp(const WeatherApp());
+  runApp(const WeatherAppMain());
 }
 
-class WeatherApp extends StatelessWidget {
-  const WeatherApp({super.key});
+class WeatherAppMain extends StatelessWidget {
+  const WeatherAppMain({super.key});
 
   @override
   Widget build(final BuildContext context) {

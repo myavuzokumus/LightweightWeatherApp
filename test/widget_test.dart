@@ -12,7 +12,7 @@ import 'package:lightweightweather/main.dart';
 void main() {
   testWidgets('Counter increments smoke test', (final WidgetTester tester) async {
     // Build our app and trigger a frame.
-    await tester.pumpWidget(const WeatherApp());
+    await tester.pumpWidget(const WeatherAppMain());
 
     // Verify that our counter starts at 0.
     expect(find.text('0'), findsOneWidget);

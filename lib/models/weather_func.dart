@@ -47,7 +47,11 @@ String getIconOfWeather(final String type, final String hour) {
         return "assets/icons/lottie/clear-night.json";
       }
     case "Cloudy":
-      return "assets/icons/lottie/cloudy.json";
+      if (newHour > 6 && newHour < 19) {
+        return "assets/icons/lottie/cloudy.json";
+      } else {
+        return "assets/icons/lottie/extreme-night.json";
+      }
     case "Rainy":
       return "assets/icons/lottie/overcast-rain.json";
     case "Snowy":
@@ -58,12 +62,21 @@ String getIconOfWeather(final String type, final String hour) {
   }
 }
 
-String backgroundSplash(final String type) {
+String backgroundSplash(final String type, final String hour) {
+  final int newHour = int.parse(hour.substring(0,2));
   switch (type) {
     case "Sunny":
-      return "assets/icons/lottie/rainbow-clear.json";
+      if (newHour > 6 && newHour < 19) {
+        return "assets/icons/lottie/rainbow-clear.json";
+      } else {
+        return "assets/icons/lottie/starry-night.json";
+      }
     case "Cloudy":
-      return "assets/icons/lottie/cloudy.json";
+      if (newHour > 6 && newHour < 19) {
+        return "assets/icons/lottie/cloudy.json";
+      } else {
+        return "assets/icons/lottie/extreme-night.json";
+      }
     case "Rainy":
       return "assets/icons/lottie/raindrops.json";
     case "Snowy":
@@ -126,7 +139,7 @@ String getTime() {
   return match;
 }
 
-List<String> nextHours() {
+/*List<String> nextHours() {
   final int hourNum = DateTime.now().hour;
 
   final List<String> result = [];
@@ -136,7 +149,7 @@ List<String> nextHours() {
   }
 
   return result;
-}
+}*/
 
 List<String> nextDays({required final int nextDay}) {
   final int dayNum = DateTime.now().weekday;
