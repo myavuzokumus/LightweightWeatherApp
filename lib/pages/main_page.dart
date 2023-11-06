@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -23,6 +25,7 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
   late WeatherInfo weatherInfo;
   late String currentTime;
   late String lastSelectedCity;
+  late GlobalKey<RefreshIndicatorState> refreshKey = GlobalKey<RefreshIndicatorState>();
 
   @override
   void initState() {
@@ -34,6 +37,22 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
     super.initState();
   }
 
+  Future<void> refreshCityInfo() async {
+
+    await Future<void>.delayed(const Duration(seconds: 2));
+
+    setState(() {
+
+      weatherInfo = WeatherInfo(lastSelectedCity);
+      refreshState = true;
+
+    });
+    if (mounted) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(const SnackBar(content: Text("Page is reloaded.")));
+    }
+
+  }
 
   @override
   Widget build(final BuildContext context) {
@@ -76,23 +95,9 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
       drawer: sidebar(context),
 
       body: RefreshIndicator(
+        key: refreshKey,
         displacement: 75,
-        onRefresh: () async {
-
-          await Future<void>.delayed(const Duration(seconds: 2));
-
-          setState(() {
-
-            weatherInfo = WeatherInfo(lastSelectedCity);
-            refreshState = true;
-
-          });
-          if (mounted) {
-            ScaffoldMessenger.of(context)
-              .showSnackBar(const SnackBar(content: Text("Page is reloaded.")));
-          }
-
-        },
+        onRefresh: refreshCityInfo,
         child: Stack(
             children: [
           Container(
@@ -235,17 +240,20 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
                                     "lastSelected", null);
                               }
 
-                              if (cities.elementAt(index) == lastSelectedCity) {
-                                setState(() {
+                              if (city == lastSelectedCity) {
+
                                 if (cities.isNotEmpty) {
                                   lastSelectedCity = cities.first;
                                 } else {
                                   lastSelectedCity = "Select City";
                                 }
-                                weatherInfo = WeatherInfo(lastSelectedCity);
-                                refreshState = true;
-                              });
+
+                                unawaited(refreshKey.currentState?.show());
+
                               }
+
+
+
                             },
                             // Show a red background as the item is swiped away.
                             background: Container(color: Colors.red),
@@ -265,13 +273,14 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
                               selectedColor: Colors.green.shade200,
                               selected: lastSelectedCity == city,
                               onTap: () {
-                                cityDataBox.put("lastSelected", city);
-                                setState(() {
+                                Navigator.pop(context);
+                                if (lastSelectedCity != city) {
+                                  cityDataBox.put("lastSelected", city);
                                   lastSelectedCity = city;
-                                  Navigator.pop(context);
-                                  weatherInfo = WeatherInfo(lastSelectedCity);
-                                  refreshState = true;
-                                });
+                                  refreshKey.currentState?.show();
+                                }
+
+
                               },
                             ),
                           );
