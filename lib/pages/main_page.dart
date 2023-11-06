@@ -25,17 +25,24 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
   late WeatherInfo weatherInfo;
   late String currentTime;
   late String lastSelectedCity;
-  late GlobalKey<RefreshIndicatorState> refreshKey = GlobalKey<RefreshIndicatorState>();
+  late final GlobalKey<RefreshIndicatorState> refreshKey;
 
   @override
   void initState() {
 
     currentTime = getTime();
     lastSelectedCity = cityDataBox.get("lastSelected") ?? "Select City";
-    weatherInfo =  WeatherInfo(lastSelectedCity);
+    weatherInfo = WeatherInfo(lastSelectedCity);
+    refreshKey = GlobalKey<RefreshIndicatorState>();
+
+    Future.delayed(const Duration(milliseconds: 200)).then((final _) {
+      refreshKey.currentState?.show();
+    });
 
     super.initState();
   }
+
+
 
   Future<void> refreshCityInfo() async {
 
