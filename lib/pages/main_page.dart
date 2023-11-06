@@ -235,7 +235,8 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
                                     "lastSelected", null);
                               }
 
-                              setState(() {
+                              if (cities.elementAt(index) == lastSelectedCity) {
+                                setState(() {
                                 if (cities.isNotEmpty) {
                                   lastSelectedCity = cities.first;
                                 } else {
@@ -244,6 +245,7 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
                                 weatherInfo = WeatherInfo(lastSelectedCity);
                                 refreshState = true;
                               });
+                              }
                             },
                             // Show a red background as the item is swiped away.
                             background: Container(color: Colors.red),
