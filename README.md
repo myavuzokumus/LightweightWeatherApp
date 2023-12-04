@@ -20,7 +20,12 @@ flutter create weather_app
 git clone https://github.com/OverBrave/WeatherApp.git
 ```
 
-3. Test your changes by running the app on an emulator or a physical device:
+3. Create ".env" file in root directory and add your Google Maps AutoComplete Places API Key in the file:
+```
+PLACES_API_KEY=key
+```
+
+4. Test your changes by running the app on an emulator or a physical device:
 ```
 flutter run
 ```
