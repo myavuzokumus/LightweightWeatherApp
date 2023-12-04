@@ -10,8 +10,7 @@
 Frontend:
 - Some theme and data adjustment will be applied. (Flutter Side)
 Backend:
-- POST will be used to transmit non-existent cities via Django & RestAPI. (WIP, will be added on new branch when it is finished.)
-- Collect data properly from WeatherAPI (Using visualcrossing weather api)
+- Daily and Hourly Data will be fetched and imported to app. (Django & RestAPI side)
 
 ## Installation
 
@@ -40,6 +39,11 @@ flutter run
 - [hive](https://pub.dev/packages/hive) - Save for the user’s selected city in device’s storage.
 - [lottie](https://pub.dev/packages/lottie) - To use animated icons in an app.
 - [screenutil](https://pub.dev/packages/flutter_screenutil) - To make a responsive design for an app.
+
+## APIs
+
+- [visualcrossing] - Weather Data
+- [Google Maps AutoComplete Places]- City Data
 
 ## License
 
