@@ -6,9 +6,12 @@
 
 ![](/assets/layout1.png)
 
-### TODO: 
-- Django backend will be added. (Django side done but not added in flutter side yet. Rest API will be used.)
-- Retrieve data with WeatherAPI.
+### TODO:
+Frontend:
+- Some theme and data adjustment will be applied. (Flutter Side)
+Backend:
+- POST will be used to transmit non-existent cities via Django & RestAPI. (WIP, will be added on new branch when it is finished.)
+- Collect data properly from WeatherAPI (Using visualcrossing weather api)
 
 ## Installation
 

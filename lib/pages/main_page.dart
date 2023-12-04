@@ -32,7 +32,9 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
 
   Future<WeatherInfo> getCityWeatherInfo(final String requestedCity) async {
 
-    final response = await http.get(Uri.parse("http://10.0.2.2:8000/weatherinfodetails"));
+    var baseURL = Uri.parse("http://10.0.2.2:8000/weatherinfodetails");
+
+    final response = await http.get(baseURL);
 
     if (response.statusCode == 200){
       final List<dynamic> json = jsonDecode(utf8.decode(response.bodyBytes));
@@ -40,11 +42,11 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
 
       if (element == null ){
 
-        var post_url = Uri.parse("http://10.0.2.2:8000/weatherinfodetails");
+        var post_url = baseURL;
 
         var params = {
           "message": "No data found for $requestedCity",
-          "query": requestedCity
+          "city": requestedCity
         };
 
         var post_response = await http.post(post_url, body: params);
