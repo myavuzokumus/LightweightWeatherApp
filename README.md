@@ -1,12 +1,14 @@
 # WeatherApp
 
-
 | Image | Description |
 | --- | --- |
 | ![](/assets/layout2.png) | This is my first Flutter project that I developed with Backend. Django is used in the background of this simple and easy to use Weather app. |
 
 ![](/assets/layout1.png)
 
+### TODO: 
+- Django backend will be added. (Django side done but not added in flutter side yet. Rest API will be used.)
+- Retrieve data with WeatherAPI.
 
 ## Installation
 
