@@ -36,14 +36,37 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
 
     if (response.statusCode == 200){
       final List<dynamic> json = jsonDecode(utf8.decode(response.bodyBytes));
-      return WeatherInfo.fromMap(json.firstWhere((final map) {return WeatherInfo.fromMap(map).city == requestedCity;}));
+      var element = json.firstWhere((final map) => (WeatherInfo.fromMap(map).city == requestedCity), orElse: () => null);
+
+      if (element == null ){
+
+        var post_url = Uri.parse("http://10.0.2.2:8000/weatherinfodetails");
+
+        var params = {
+          "message": "No data found for $requestedCity",
+          "query": requestedCity
+        };
+
+        var post_response = await http.post(post_url, body: params);
+
+        if (post_response.statusCode == 200) {
+          var post_data = jsonDecode(post_response.body);
+
+          print(post_data);
+          return WeatherInfo.fromMap(post_data);
+
+        } else {
+          throw Exception("Request failed with status: ${post_response.statusCode}.");
+        }
+      }
+      else {
+        return WeatherInfo.fromMap(element);
+      }
     }
     else {
       throw Exception("Failed to load data.");
     }
   }
-
-  //TODO: If requested city is not exist, send that information to the server for add database wanted city.
 
   @override
   void initState() {
