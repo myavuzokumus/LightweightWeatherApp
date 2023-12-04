@@ -1,6 +1,10 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:http/http.dart' as http;
+import 'package:uuid/uuid.dart';
 
 import '../main.dart';
 
@@ -16,7 +20,34 @@ class _AddCityState extends State<AddCity> {
 
   List<String> cities = cityDataBox.get("cities") ?? <String>[];
 
+  List<String> predictedList = <String>[];
+
   int foundedCityCount = 0;
+
+  final String uuid = const Uuid().v4();
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  Future<void> getSuggestion(final String suggestionWord) async {
+
+    final String? placesApiKey = dotenv.env["PLACES_API_KEY"];
+    const String baseURL = "https://maps.googleapis.com/maps/api/place/autocomplete/json";
+    final String request = "$baseURL?input=$suggestionWord&key=$placesApiKey&sessionToken=$uuid&types=country|administrative_area_level_1";
+
+    final response = await http.get(Uri.parse(request));
+
+    if (response.statusCode == 200){
+      setState(() {
+        predictedList = List.from(jsonDecode(response.body)['predictions'].map((final map) => map["description"]));
+      });
+    }
+    else {
+      throw Exception("Failed to load data.");
+    }
+  }
 
   @override
   void dispose() {
@@ -34,25 +65,24 @@ class _AddCityState extends State<AddCity> {
           style: const TextStyle(color: Colors.black),
           decoration: const InputDecoration(hintText: 'Search city name...'),
           onChanged: (final value) {
-            setState(() {
-              searchTextController.text.isNotEmpty
-                  ? foundedCityCount = 5
-                  : foundedCityCount = 0;
-            });
+            getSuggestion(value);
           },
         ),
       ),
       body: ListView.builder(
-        itemCount: foundedCityCount,
+        itemCount: predictedList.length,
         itemBuilder: (final BuildContext context, final int index) {
+
+          final String stateCity = predictedList[index];
+
           return ListTile(
             title: Padding(
               padding: const EdgeInsets.only(left: 18.0, right: 18),
-              child: Text(searchTextController.text,
+              child: Text(stateCity,
                   style: const TextStyle(color: Colors.black)),
             ),
             onTap: () async {
-              if (cities.contains(searchTextController.text)) {
+              if (cities.contains(stateCity)) {
                 unawaited(showDialog<String>(
                   context: context,
                   builder: (final BuildContext context) => AlertDialog(
@@ -62,7 +92,7 @@ class _AddCityState extends State<AddCity> {
                     actions: <Widget>[
                       TextButton(
                         onPressed: () => Navigator.pop(context, 'OK'),
-                        child: const Text('OK'),
+                        child: const Text('Ok'),
                       ),
                     ],
                   ),
@@ -70,9 +100,11 @@ class _AddCityState extends State<AddCity> {
               } else {
                 await cityDataBox.put("cities", <String>[
                   ...?cityDataBox.get("cities"),
-                  searchTextController.text
+                  stateCity
                 ]);
-                Navigator.pop(context, true);
+                if (mounted) {
+                  Navigator.pop(context, true);
+                }
               }
             },
           );

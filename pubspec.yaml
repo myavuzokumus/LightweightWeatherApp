@@ -40,6 +40,9 @@ dependencies:
   lottie: ^2.7.0
   flutter_screenutil: ^5.9.0
   bitsdojo_window: ^0.1.5
+  uuid: ^4.2.1
+  http: ^1.1.2
+  flutter_dotenv: ^5.1.0
   #flutter_launcher_icons: ^0.13.1
 
   # flutter_svg: ^2.0.9
@@ -88,6 +91,7 @@ flutter:
   assets:
     - assets/icons/lottie/
     - assets/app_icon/
+    - .env
   # assets:
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
