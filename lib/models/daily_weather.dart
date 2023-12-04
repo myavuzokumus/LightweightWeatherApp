@@ -3,18 +3,26 @@ import 'dart:math';
 import 'weather_info.dart';
 
 class DailyWeather extends WeatherInfo {
-
-  String dayTemp;
   @override
   late int humidity;
   @override
   late int dayTemperature;
   @override
   late int nightTemperature;
+
+  late String day;
   late String dayWeather;
   late String nightWeather;
 
-  DailyWeather(final String city, this.dayTemp) : super(city) {
+  DailyWeather(final WeatherInfo city, this.day)
+      : super(
+            city.city,
+            city.currentWeather,
+            city.instantTemperature,
+            city.dayTemperature,
+            city.nightTemperature,
+            city.feelsLike,
+            city.humidity) {
     // Here the values will be retrieved via API.
     // Random values are currently generated.
     humidity = 50 + Random().nextInt(50);

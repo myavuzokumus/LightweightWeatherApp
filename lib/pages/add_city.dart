@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:uuid/uuid.dart';
 
 import '../main.dart';
+import '../models/weather_info.dart';
 
 class AddCity extends StatefulWidget {
   const AddCity({super.key});

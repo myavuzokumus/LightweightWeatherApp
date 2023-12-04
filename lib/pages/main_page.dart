@@ -1,8 +1,10 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:http/http.dart' as http;
 import 'package:lottie/lottie.dart';
 
 import '../main.dart';
@@ -26,34 +28,51 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
   late String currentTime;
   late String lastSelectedCity;
   late final GlobalKey<RefreshIndicatorState> refreshKey;
+  late WeatherInfo fetchedCityInfo;
+
+  Future<WeatherInfo> getCityWeatherInfo(final String requestedCity) async {
+
+    final response = await http.get(Uri.parse("http://10.0.2.2:8000/weatherinfodetails"));
+
+    if (response.statusCode == 200){
+      final List<dynamic> json = jsonDecode(utf8.decode(response.bodyBytes));
+      return WeatherInfo.fromMap(json.firstWhere((final map) {return WeatherInfo.fromMap(map).city == requestedCity;}));
+    }
+    else {
+      throw Exception("Failed to load data.");
+    }
+  }
+
+  //TODO: If requested city is not exist, send that information to the server for add database wanted city.
 
   @override
   void initState() {
 
     currentTime = getTime();
     lastSelectedCity = cityDataBox.get("lastSelected") ?? "Select City";
-    weatherInfo = WeatherInfo(lastSelectedCity);
     refreshKey = GlobalKey<RefreshIndicatorState>();
+    weatherInfo = WeatherInfo(lastSelectedCity, "Loading...", 0, 0, 0, 0, 0);
 
     Future.delayed(const Duration(milliseconds: 200)).then((final _) {
+
       refreshKey.currentState?.show();
     });
 
     super.initState();
   }
 
-
-
   Future<void> refreshCityInfo() async {
 
-    await Future<void>.delayed(const Duration(seconds: 2));
+    //await Future<void>.delayed(const Duration(seconds: 2));
+
+    weatherInfo = await getCityWeatherInfo(lastSelectedCity);
 
     setState(() {
 
-      weatherInfo = WeatherInfo(lastSelectedCity);
       refreshState = true;
 
     });
+
     if (mounted) {
       ScaffoldMessenger.of(context)
           .showSnackBar(const SnackBar(content: Text("Page is reloaded.")));
@@ -327,7 +346,7 @@ class _HourlyStatusCardState extends State<HourlyStatusCard> {
   late String currentTime;
 
   List<HourlyWeather> getHoursData() {
-    return hours.map((final e) => widget.weatherInfo.hour(e)).toList();
+    return hours.map((final e) => widget.weatherInfo.hourlyInfo(e)).toList();
   }
 
   @override
@@ -420,14 +439,14 @@ class _NextDaysCardState extends State<NextDaysCard> {
   late List<DailyWeather> dayDetails;
 
   List<DailyWeather> getDailyData() {
-    return nextDay.map((final e) => widget.weatherInfo.day(e)).toList();
+    return nextDay.map((final e) => widget.weatherInfo.dailyInfo(e)).toList();
   }
 
   @override
   void initState() {
 
     nextDay = nextDays(nextDay: 6);
-    yesterday = widget.weatherInfo.day(nextDay.last);
+    yesterday = widget.weatherInfo.dailyInfo(nextDay.last);
     dayDetails = getDailyData();
 
     super.initState();
@@ -439,7 +458,7 @@ class _NextDaysCardState extends State<NextDaysCard> {
     if (refreshState == true) {
       setState(() {
         nextDay = nextDays(nextDay: 6);
-        yesterday = widget.weatherInfo.day(nextDay.last);
+        yesterday = widget.weatherInfo.dailyInfo(nextDay.last);
         dayDetails = getDailyData();
         refreshState = false;
       });
