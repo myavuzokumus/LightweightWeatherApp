@@ -23,19 +23,22 @@ class WeatherHomePage extends StatefulWidget {
 
 class _WeatherHomePageState extends State<WeatherHomePage> {
 
+
+  final String currentTime = getTime();
+  String lastSelectedCity = cityDataBox.get("lastSelected") ?? "Select City";
+
+  late Map<String, dynamic> returnedJsonData;
   late WeatherInfo weatherInfo;
-  late String currentTime;
-  late String lastSelectedCity;
   late final GlobalKey<RefreshIndicatorState> refreshKey;
-  late WeatherInfo fetchedCityInfo;
+
 
   @override
   void initState() {
 
-    currentTime = getTime();
-    lastSelectedCity = cityDataBox.get("lastSelected") ?? "Select City";
     refreshKey = GlobalKey<RefreshIndicatorState>();
+
     weatherInfo = WeatherInfo(lastSelectedCity, "Loading...", 0, 0, 0, 0, 0);
+    returnedJsonData = {};
 
     Future.delayed(const Duration(milliseconds: 200)).then((final _) {
 
@@ -48,8 +51,9 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
   Future<void> refreshCityInfo() async {
 
     //await Future<void>.delayed(const Duration(seconds: 2));
+    await DataService.getCityWeatherInfo(lastSelectedCity).then((final value) {returnedJsonData = value;});
 
-    weatherInfo = await DataService.getCityWeatherInfo(lastSelectedCity);
+    weatherInfo = WeatherInfo.fromMap(returnedJsonData);
 
     setState(() {
 
@@ -186,12 +190,13 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
                         HourlyStatusCard(
                           weatherInfo: weatherInfo,
                           currentTime: currentTime,
+                          returnedJsonData: returnedJsonData,
                         ),
                         if (isScreenWide)
                           const SizedBox(width: 25)
                         else
                           const SizedBox(width: 0),
-                        NextDaysCard(weatherInfo: weatherInfo),
+                        NextDaysCard(weatherInfo: weatherInfo, returnedJsonData: returnedJsonData),
                       ],
                     )
                   ]),
@@ -312,10 +317,11 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
 }
 
 class HourlyStatusCard extends StatefulWidget {
-  const HourlyStatusCard({required this.weatherInfo, required this.currentTime, super.key});
+  const HourlyStatusCard({required this.weatherInfo, required this.currentTime, super.key, required this.returnedJsonData});
 
   final WeatherInfo weatherInfo;
   final String currentTime;
+  final Map<String, dynamic> returnedJsonData;
 
   @override
   State<HourlyStatusCard> createState() => _HourlyStatusCardState();
@@ -330,7 +336,8 @@ class _HourlyStatusCardState extends State<HourlyStatusCard> {
   late String currentTime;
 
   List<HourlyWeather> getHoursData() {
-    return hours.map((final e) => widget.weatherInfo.hourlyInfo(e)).toList();
+
+    return widget.returnedJsonData["hourly"].map<HourlyWeather>( (final value) => widget.weatherInfo.hourlyInfo(value)).toList();
   }
 
   @override
@@ -406,9 +413,10 @@ class _HourlyStatusCardState extends State<HourlyStatusCard> {
 }
 
 class NextDaysCard extends StatefulWidget {
-  const NextDaysCard({required this.weatherInfo, super.key});
+  const NextDaysCard({required this.weatherInfo, super.key, required this.returnedJsonData});
 
   final WeatherInfo weatherInfo;
+  final Map<String, dynamic> returnedJsonData;
 
   @override
   State<NextDaysCard> createState() => _NextDaysCardState();
@@ -423,14 +431,18 @@ class _NextDaysCardState extends State<NextDaysCard> {
   late List<DailyWeather> dayDetails;
 
   List<DailyWeather> getDailyData() {
-    return nextDay.map((final e) => widget.weatherInfo.dailyInfo(e)).toList();
+
+    return widget.returnedJsonData["daily"].map<DailyWeather>( (final value) => widget.weatherInfo.dailyInfo(value)).toList();
+
+    //return nextDay.map((final e) => widget.weatherInfo.dailyInfo(widget.returnedJsonData["daily"])).toList();
   }
 
   @override
   void initState() {
 
     nextDay = nextDays(nextDay: 6);
-    yesterday = widget.weatherInfo.dailyInfo(nextDay.last);
+    //yesterday = widget.weatherInfo.dailyInfo(nextDay.last);
+    yesterday = DailyWeather(widget.weatherInfo, DateTime.parse("2023-12-06"), "Sunny", "Sunny", 10, 10, 10);
     dayDetails = getDailyData();
 
     super.initState();
@@ -442,7 +454,8 @@ class _NextDaysCardState extends State<NextDaysCard> {
     if (refreshState == true) {
       setState(() {
         nextDay = nextDays(nextDay: 6);
-        yesterday = widget.weatherInfo.dailyInfo(nextDay.last);
+        //yesterday = widget.weatherInfo.dailyInfo(nextDay.last);
+        yesterday = DailyWeather(widget.weatherInfo, DateTime.parse("2023-12-06"), "Sunny", "Sunny", 10, 10, 10);
         dayDetails = getDailyData();
         refreshState = false;
       });

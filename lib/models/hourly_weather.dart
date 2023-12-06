@@ -1,23 +1,24 @@
-import 'dart:math';
 import 'weather_info.dart';
 
 class HourlyWeather extends WeatherInfo {
 
-  String hourTemp;
-  late int temperature;
-  late String weatherType;
+  final String hourTemp;
+  final int temperature;
+  final String weatherType;
 
-  HourlyWeather(final WeatherInfo city, this.hourTemp) : super(
+  HourlyWeather(final WeatherInfo city, this.hourTemp, this.temperature, this.weatherType) : super(
       city.city,
       city.currentWeather,
       city.instantTemperature,
       city.dayTemperature,
       city.nightTemperature,
       city.feelsLike,
-      city.humidity) {
-    // Here the values will be retrieved via API.
-    // Random values are currently generated.
-    temperature = 10 + Random().nextInt(20);
-    weatherType = ["Sunny", "Cloudy", "Rainy", "Snowy"][Random().nextInt(4)];
-  }
+      city.humidity);
+
+  HourlyWeather.fromMap(final WeatherInfo city, final Map<String, dynamic> map) : this(
+      city,
+      map['hour'],
+      map['temperature'],
+      map['weatherType'],
+  );
 }

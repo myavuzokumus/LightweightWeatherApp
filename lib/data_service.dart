@@ -8,7 +8,7 @@ import 'models/weather_info.dart';
 
 mixin DataService {
 
-  static Future<WeatherInfo> getCityWeatherInfo(final String requestedCity) async {
+  static Future<Map<String, dynamic>> getCityWeatherInfo(final String requestedCity) async {
 
     final baseURL = Uri.parse("http://10.0.2.2:8000/weatherinfodetails");
 
@@ -32,15 +32,14 @@ mixin DataService {
         if (postResponse.statusCode == 200) {
           final postData = jsonDecode(postResponse.body);
 
-          print(postData);
-          return WeatherInfo.fromMap(postData);
+          return postData;
 
         } else {
           throw Exception("Request failed with status: ${postResponse.statusCode}.");
         }
       }
       else {
-        return WeatherInfo.fromMap(element);
+        return element;
       }
     }
     else {

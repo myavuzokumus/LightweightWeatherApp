@@ -38,13 +38,13 @@ class WeatherInfo {
 
   // Day method is defined
   // This method returns a DailyWeather class containing that day's weather information
-  DailyWeather dailyInfo(final String day) {
-    return DailyWeather(this, day);
+  DailyWeather dailyInfo(final Map<String, dynamic> map) {
+    return DailyWeather.fromMap(this, map);
   }
 
   // Hour method is defined
   // This method returns an HourlyWeather class containing the weather information for that hour
-  HourlyWeather hourlyInfo(final String hour) {
-    return HourlyWeather(this, hour);
+  HourlyWeather hourlyInfo(final Map<String, dynamic> map) {
+    return HourlyWeather.fromMap(this, map);
   }
 }
