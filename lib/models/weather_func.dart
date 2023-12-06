@@ -86,8 +86,9 @@ String backgroundSplash(final String type, final String hour) {
   }
 }
 
-List<Color> backgroundColor(final String type) {
+List<Color> backgroundColor(final String type, final String hour) {
 
+  final int newHour = int.parse(hour.substring(0,2));
   switch (type) {
     case "Cloudy":
       return [
@@ -105,10 +106,18 @@ List<Color> backgroundColor(final String type) {
         const Color(0xFF414449)
       ];
     default:
-      return [
-        const Color(0xFF53d0ff),
-        const Color(0xFF43a8cd)
-      ];
+      if (newHour > 6 && newHour < 19) {
+        return [
+          const Color(0xFF53d0ff),
+          const Color(0xFF43a8cd)
+        ];
+      } else {
+        return [
+          const Color(0xFF00377b),
+          const Color(0xFF43a8cd)
+        ];
+      }
+
   }
 }
 
@@ -127,7 +136,6 @@ String getAnimationOfWeather(final String type, final String hour) {
       return "assets/icons/lottie/overcast-rain.json";
     case "Snowy":
       return "assets/icons/lottie/overcast-snow.json";
-
     default:
       return "assets/icons/lottie/clear-day.json";
   }

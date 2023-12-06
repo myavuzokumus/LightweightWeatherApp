@@ -120,7 +120,7 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
               colors: [
                 Colors.blue.shade100,
                 Colors.blue.shade300,
-                ...backgroundColor(weatherInfo.currentWeather)
+                ...backgroundColor(weatherInfo.currentWeather, currentTime)
               ],
             )),
           ),
