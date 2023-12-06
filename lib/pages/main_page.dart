@@ -1,10 +1,9 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:http/http.dart' as http;
+import 'package:lightweightweather/data_service.dart';
 import 'package:lottie/lottie.dart';
 
 import '../main.dart';
@@ -30,46 +29,6 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
   late final GlobalKey<RefreshIndicatorState> refreshKey;
   late WeatherInfo fetchedCityInfo;
 
-  Future<WeatherInfo> getCityWeatherInfo(final String requestedCity) async {
-
-    var baseURL = Uri.parse("http://10.0.2.2:8000/weatherinfodetails");
-
-    final response = await http.get(baseURL);
-
-    if (response.statusCode == 200){
-      final List<dynamic> json = jsonDecode(utf8.decode(response.bodyBytes));
-      var element = json.firstWhere((final map) => (WeatherInfo.fromMap(map).city == requestedCity), orElse: () => null);
-
-      if (element == null ){
-
-        var post_url = baseURL;
-
-        var params = {
-          "message": "No data found for $requestedCity",
-          "city": requestedCity
-        };
-
-        var post_response = await http.post(post_url, body: params);
-
-        if (post_response.statusCode == 200) {
-          var post_data = jsonDecode(post_response.body);
-
-          print(post_data);
-          return WeatherInfo.fromMap(post_data);
-
-        } else {
-          throw Exception("Request failed with status: ${post_response.statusCode}.");
-        }
-      }
-      else {
-        return WeatherInfo.fromMap(element);
-      }
-    }
-    else {
-      throw Exception("Failed to load data.");
-    }
-  }
-
   @override
   void initState() {
 
@@ -90,7 +49,7 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
 
     //await Future<void>.delayed(const Duration(seconds: 2));
 
-    weatherInfo = await getCityWeatherInfo(lastSelectedCity);
+    weatherInfo = await DataService.getCityWeatherInfo(lastSelectedCity);
 
     setState(() {
 

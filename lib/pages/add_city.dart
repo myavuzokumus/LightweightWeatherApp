@@ -1,13 +1,9 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:http/http.dart' as http;
-import 'package:uuid/uuid.dart';
 
+import '../data_service.dart';
 import '../main.dart';
-import '../models/weather_info.dart';
 
 class AddCity extends StatefulWidget {
   const AddCity({super.key});
@@ -25,29 +21,9 @@ class _AddCityState extends State<AddCity> {
 
   int foundedCityCount = 0;
 
-  final String uuid = const Uuid().v4();
-
   @override
   void initState() {
     super.initState();
-  }
-
-  Future<void> getSuggestion(final String suggestionWord) async {
-
-    final String? placesApiKey = dotenv.env["PLACES_API_KEY"];
-    const String baseURL = "https://maps.googleapis.com/maps/api/place/autocomplete/json";
-    final String request = "$baseURL?input=$suggestionWord&key=$placesApiKey&sessionToken=$uuid&types=country|administrative_area_level_1";
-
-    final response = await http.get(Uri.parse(request));
-
-    if (response.statusCode == 200){
-      setState(() {
-        predictedList = List.from(jsonDecode(response.body)['predictions'].map((final map) => map["description"]));
-      });
-    }
-    else {
-      throw Exception("Failed to load data.");
-    }
   }
 
   @override
@@ -65,8 +41,9 @@ class _AddCityState extends State<AddCity> {
           controller: searchTextController,
           style: const TextStyle(color: Colors.black),
           decoration: const InputDecoration(hintText: 'Search city name...'),
-          onChanged: (final value) {
-            getSuggestion(value);
+          onChanged: (final value) async {
+            predictedList = await DataService.getSuggestion(value);
+            setState(() {});
           },
         ),
       ),
