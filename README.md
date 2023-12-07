@@ -7,10 +7,13 @@
 ![](/assets/layout1.png)
 
 ### TODO:
-Frontend:
-- Some theme and data adjustment will be applied. (Flutter Side)
-Backend:
-- Daily and Hourly Data will be fetched and imported to app. (Django & RestAPI side)
+Frontend (Flutter side):
+- Some theme and data adjustment will be applied.
+- Fetched days data will be fixed.
+
+Backend (Django & RestAPI):
+- Data will be refreshed every 15 minute from API.
+- Will be added files after project completely finished. (Need some fixes to security for API)
 
 ## Installation
 
