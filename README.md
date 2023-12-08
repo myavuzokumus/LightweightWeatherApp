@@ -9,7 +9,8 @@
 ### TODO:
 Frontend (Flutter side):
 - Some theme and data adjustment will be applied. (75%)
-- Fetched days data will be fixed. 
+- Fetched days data will be fixed.
+- Fetched days data will be fixed.
 
 Backend (Django & RestAPI):
 - Data will be refreshed every 15 minute from API.
