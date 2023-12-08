@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:lightweightweather/data_service.dart';
@@ -23,35 +24,32 @@ class WeatherHomePage extends StatefulWidget {
 }
 
 class _WeatherHomePageState extends State<WeatherHomePage> {
-
   late WeatherInfo weatherInfo;
   late final GlobalKey<RefreshIndicatorState> refreshKey;
   final String currentTime = getTime();
 
   late Future<Map<String, dynamic>> returnedJsonData;
 
-
   @override
   void initState() {
-
     refreshKey = GlobalKey<RefreshIndicatorState>();
 
-    weatherInfo = WeatherInfo(lastSelectedCity, "Loading...", 0, 0, 0, 0, 0);
-
+  /*
     Future.delayed(const Duration(milliseconds: 200)).then((final _) {
-
       refreshKey.currentState?.show();
+    });
+  */
 
+    SchedulerBinding.instance.addPostFrameCallback((final _) {
+      refreshKey.currentState?.show();
     });
 
     returnedJsonData = DataService.getCityWeatherInfo(lastSelectedCity);
 
     super.initState();
-
   }
 
   Future<Map<String, dynamic>> refreshCityInfo() async {
-
     setState(() {
       refreshState = true;
       returnedJsonData = DataService.getCityWeatherInfo(lastSelectedCity);
@@ -63,12 +61,10 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
     }
 
     return returnedJsonData;
-
   }
 
   @override
   Widget build(final BuildContext context) {
-
     final bool isScreenWide = MediaQuery.of(context).size.width >= 960;
 
     return Scaffold(
@@ -105,60 +101,60 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
         title: Center(child: Text(lastSelectedCity)),
       ),
       drawer: sidebar(context),
-
       body: RefreshIndicator(
         key: refreshKey,
         displacement: 75,
         onRefresh: refreshCityInfo,
-        child: Stack(
-            children: [
-          Container(
-            height: double.infinity,
-            decoration: BoxDecoration(
-                gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              stops: const [0.05, 0.15, 0.6, 0.85],
-              colors: [
-                Colors.blue.shade100,
-                Colors.blue.shade300,
-                ...backgroundColor(weatherInfo.currentWeather, currentTime)
-              ],
-            )),
-          ),
-          Positioned(
-            bottom: -125,
-            left: -200,
-            child: Opacity(
-              opacity: 0.25,
-              child: Lottie.asset(getAnimationOfWeather(weatherInfo.currentWeather, currentTime),
-                  width: 512),
-            ),
-          ),
+        child: FutureBuilder(
+          future: returnedJsonData,
+          builder: (final BuildContext context,
+              final AsyncSnapshot<dynamic> snapshot) {
+            if (snapshot.hasData) {
+              final Map<String, dynamic> returnedJsonData = snapshot.data;
+              weatherInfo = WeatherInfo.fromMap(returnedJsonData);
 
-
-              SingleChildScrollView(
-                physics: const AlwaysScrollableScrollPhysics(),
-                child: FutureBuilder(
-                  future:  returnedJsonData,
-                  builder: (final BuildContext context, final AsyncSnapshot<dynamic> snapshot) {
-
-                    if (snapshot.hasData) {
-
-                    final Map<String, dynamic> returnedJsonData = snapshot.data;
-                    weatherInfo = WeatherInfo.fromMap(returnedJsonData);
-
-                    return Container(
+              return Stack(children: [
+                Container(
+                  height: double.infinity,
+                  decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    stops: const [0.05, 0.15, 0.6, 0.85],
+                    colors: [
+                      Colors.blue.shade100,
+                      Colors.blue.shade300,
+                      ...backgroundColor(
+                          weatherInfo.currentWeather, currentTime)
+                    ],
+                  )),
+                ),
+                Positioned(
+                  bottom: -125,
+                  left: -200,
+                  child: Opacity(
+                    opacity: 0.25,
+                    child: Lottie.asset(
+                        getAnimationOfWeather(
+                            weatherInfo.currentWeather, currentTime),
+                        width: 512),
+                  ),
+                ),
+                SingleChildScrollView(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    child: Container(
                       margin:
-                      EdgeInsets.only(top: 75.h, left: 10.w, right: 10.w),
+                          EdgeInsets.only(top: 75.h, left: 10.w, right: 10.w),
                       child: Column(children: <Widget>[
-                        WeatherTitle(weatherInfo: weatherInfo, currentTime: currentTime),
+                        WeatherTitle(
+                            weatherInfo: weatherInfo, currentTime: currentTime),
                         Flex(
                           crossAxisAlignment: isScreenWide
                               ? CrossAxisAlignment.start
                               : CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.center,
-                          direction: isScreenWide ? Axis.horizontal : Axis.vertical,
+                          direction:
+                              isScreenWide ? Axis.horizontal : Axis.vertical,
                           children: [
                             if (lastSelectedCity != "Select City")
                               HourlyStatusCard(
@@ -170,26 +166,23 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
                               const SizedBox(width: 25)
                             else
                               const SizedBox(width: 0),
-                            NextDaysCard(weatherInfo: weatherInfo, returnedJsonData: returnedJsonData),
+                            NextDaysCard(
+                                weatherInfo: weatherInfo,
+                                returnedJsonData: returnedJsonData),
                           ],
                         )
                       ]),
-                    );
-                    }
-
-                    else {
-                      return Container(
-                        margin:
-                        EdgeInsets.only(top: 75.h, left: 10.w, right: 10.w),
-                        child:  const Text("Connection failed with server."));
-                    }
-                  },
-                ),
-              ),
-        ]),
+                    ))
+              ]);
+            } else {
+              return Container(
+                  margin: EdgeInsets.only(top: 75.h, left: 10.w, right: 10.w),
+                  child: const Text("Connection failed with server."));
+            }
+          },
+        ),
       ),
     );
-
   }
 
   Drawer sidebar(final BuildContext context) {
@@ -228,19 +221,15 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
                             onDismissed: (final direction) async {
                               // Remove the item from the data source.
                               cities.removeAt(index);
-                              await cityDataBox.put(
-                                  "cities", cities.toList());
+                              await cityDataBox.put("cities", cities.toList());
                               if (cities.isNotEmpty) {
                                 await cityDataBox.put(
                                     "lastSelected", cities.first);
-                              }
-                              else {
-                                await cityDataBox.put(
-                                    "lastSelected", null);
+                              } else {
+                                await cityDataBox.put("lastSelected", null);
                               }
 
                               if (city == lastSelectedCity) {
-
                                 if (cities.isNotEmpty) {
                                   lastSelectedCity = cities.first;
                                 } else {
@@ -248,9 +237,7 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
                                 }
 
                                 unawaited(refreshKey.currentState?.show());
-
                               }
-
                             },
                             // Show a red background as the item is swiped away.
                             background: Container(color: Colors.red),
@@ -276,8 +263,6 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
                                   lastSelectedCity = city;
                                   refreshKey.currentState?.show();
                                 }
-
-
                               },
                             ),
                           );
