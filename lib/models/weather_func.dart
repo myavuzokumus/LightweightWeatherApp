@@ -41,17 +41,17 @@ List<Color> backgroundColor(final String type, final String hour) {
 
   final int newHour = int.parse(hour.substring(0,2));
   switch (type) {
-    case "partly-cloudy-day":
+    case ("partly-cloudy-day" || "partly-cloudy-night" || "cloudy"):
       return [
         const Color(0xFFd4dde8),
         const Color(0xFFd4dde8)
       ];
-    case "Rainy":
+    case "rain":
       return [
         const Color(0xFF1b4978),
         const Color(0xFF123252)
       ];
-    case "Snowy":
+    case ("snow" || "snowy"):
       return [
         const Color(0xFF6f747c),
         const Color(0xFF414449)
@@ -83,7 +83,7 @@ String getAnimationOfWeather(final String type, final String hour) {
       return "assets/icons/lottie/cloudy.json";
     case "rain":
       return "assets/icons/lottie/overcast-rain.json";
-    case "snow" || "snowy":
+    case ("snow" || "snowy"):
       return "assets/icons/lottie/overcast-snow.json";
     default:
       if (newHour > 6 && newHour < 19) {
@@ -112,8 +112,8 @@ String getTime() {
   return result;
 }*/
 
-List<String> nextDays({required final int nextDay}) {
-  final int dayNum = DateTime.now().weekday;
+List<String> nextDays({required final int nextDay, required final DateTime currentDay}) {
+  final int dayNum = currentDay.weekday;
 
   final List<String> result = [];
 

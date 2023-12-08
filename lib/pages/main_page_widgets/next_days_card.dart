@@ -30,16 +30,14 @@ class _NextDaysCardState extends State<NextDaysCard> {
 
     return widget.returnedJsonData["daily"].map<DailyWeather>( (final value) => widget.weatherInfo.dailyInfo(value)).toList();
 
-    //return nextDay.map((final e) => widget.weatherInfo.dailyInfo(widget.returnedJsonData["daily"])).toList();
   }
 
   @override
   void initState() {
 
-    nextDay = nextDays(nextDay: 6);
-    //yesterday = widget.weatherInfo.dailyInfo(nextDay.last);
-    yesterday = DailyWeather(widget.weatherInfo, DateTime.parse("2023-12-06"), "Sunny", "Sunny", 10, 10, 10);
     dayDetails = getDailyData();
+    nextDay = nextDays(nextDay: 6, currentDay: dayDetails[1].day);
+    yesterday = dayDetails[0];
 
     super.initState();
   }
@@ -49,10 +47,9 @@ class _NextDaysCardState extends State<NextDaysCard> {
 
     if (refreshState == true) {
       setState(() {
-        nextDay = nextDays(nextDay: 6);
-        //yesterday = widget.weatherInfo.dailyInfo(nextDay.last);
-        yesterday = DailyWeather(widget.weatherInfo, DateTime.parse("2023-12-06"), "Sunny", "Sunny", 10, 10, 10);
         dayDetails = getDailyData();
+        nextDay = nextDays(nextDay: 6, currentDay: dayDetails[1].day);
+        yesterday = dayDetails[0];
         refreshState = false;
       });
     }
@@ -114,7 +111,6 @@ class _NextDaysCardState extends State<NextDaysCard> {
                       itemCount: 5,
                       itemBuilder:
                           (final BuildContext context, final int index) {
-
 
                         return InkWell(
                           splashColor: Colors.blue.withAlpha(30),
