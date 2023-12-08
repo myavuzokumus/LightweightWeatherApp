@@ -34,7 +34,7 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
   void initState() {
     refreshKey = GlobalKey<RefreshIndicatorState>();
 
-  /*
+    /*
     Future.delayed(const Duration(milliseconds: 200)).then((final _) {
       refreshKey.currentState?.show();
     });
@@ -50,6 +50,7 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
   }
 
   Future<Map<String, dynamic>> refreshCityInfo() async {
+
     setState(() {
       refreshState = true;
       returnedJsonData = DataService.getCityWeatherInfo(lastSelectedCity);
@@ -109,7 +110,9 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
           future: returnedJsonData,
           builder: (final BuildContext context,
               final AsyncSnapshot<dynamic> snapshot) {
+
             if (snapshot.hasData) {
+
               final Map<String, dynamic> returnedJsonData = snapshot.data;
               weatherInfo = WeatherInfo.fromMap(returnedJsonData);
 
@@ -175,9 +178,14 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
                     ))
               ]);
             } else {
-              return Container(
-                  margin: EdgeInsets.only(top: 75.h, left: 10.w, right: 10.w),
-                  child: const Text("Connection failed with server."));
+              return Center(
+                child: SingleChildScrollView(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  child: Container(
+                      margin: EdgeInsets.only(top: 75.h, left: 10.w, right: 10.w),
+                      child: const Text("Connection failed with server.")),
+                ),
+              );
             }
           },
         ),

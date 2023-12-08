@@ -73,7 +73,7 @@ List<Color> backgroundColor(final String type, final String hour) {
 }
 
 String getAnimationOfWeather(final String type, final String hour) {
-  final int newHour = int.parse(getTime().substring(0,2));
+  final int newHour = int.parse(hour.substring(0,2));
   switch (type) {
     case  "clear-day":
       return "assets/icons/lottie/clear-day.json";
@@ -93,6 +93,30 @@ String getAnimationOfWeather(final String type, final String hour) {
       }
   }
 }
+
+
+String getNameofWeather(final String type, final String hour) {
+  final int newHour = int.parse(hour.substring(0,2));
+  switch (type) {
+    case  "clear-day":
+      return "Sunny";
+    case  "Clear night":
+      return "assets/icons/lottie/clear-night.json";
+    case ("partly-cloudy-day" || "partly-cloudy-night" || "cloudy"):
+      return "Cloudy";
+    case "rain":
+      return "Rainy";
+    case ("snow" || "snowy"):
+      return "Snowy";
+    default:
+      if (newHour > 6 && newHour < 19) {
+        return "Sunny";
+      } else {
+        return "Clear night";
+      }
+  }
+}
+
 
 String getTime() {
   final String utc = DateTime.now().toString().substring(11, 13);

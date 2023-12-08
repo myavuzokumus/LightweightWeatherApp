@@ -65,7 +65,7 @@ class _NextDaysCardState extends State<NextDaysCard> {
             width: 425,
             height: 250,
             padding: const EdgeInsets.all(12),
-            child: lastSelectedCity == "Select City" ? const Text("Select City") :
+            child: lastSelectedCity == "Select City" ? Center(child: Text("Select City", style: TextStyle(fontSize: 24.spMin))) :
             Column(
               children: [
                 Opacity(

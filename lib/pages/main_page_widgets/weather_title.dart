@@ -21,6 +21,7 @@ class _WeatherTitleState extends State<WeatherTitle> {
   Widget build(final BuildContext context) {
 
     final WeatherInfo weatherInfo = widget.weatherInfo;
+    final String currentTime = widget.currentTime;
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -36,7 +37,7 @@ class _WeatherTitleState extends State<WeatherTitle> {
                   style: TextStyle(fontSize: 58.spMin, height: 1),
                 ),
                 Text(
-                  weatherInfo.currentWeather,
+                  getNameofWeather(weatherInfo.currentWeather, currentTime),
                   style:
                   TextStyle(fontSize: 24.spMin, height: 1.5),
                 ),
@@ -54,7 +55,7 @@ class _WeatherTitleState extends State<WeatherTitle> {
         Flexible(
           child: Lottie.asset(
               getAnimationOfWeather(
-                  weatherInfo.currentWeather, widget.currentTime),
+                  weatherInfo.currentWeather, currentTime),
               width: 256),
         ),
       ],

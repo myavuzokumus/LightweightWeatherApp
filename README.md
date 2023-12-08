@@ -8,7 +8,6 @@
 
 ### TODO:
 Frontend (Flutter side):
-- Some theme and data adjustment will be applied. (75%)
 - APIs are not working on web version.
 
 Backend (Django & RestAPI):
