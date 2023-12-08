@@ -73,8 +73,9 @@ class _HourlyStatusCardState extends State<HourlyStatusCard> {
             return const LinearGradient(
               begin: Alignment.centerLeft,
               end: Alignment.centerRight,
-              colors: [Colors.transparent, Colors.white, Colors.white, Colors.white, Colors.transparent],
-            ).createShader(Rect.fromLTRB(-50, 0, rect.width+25, 0));
+              colors: [Colors.transparent, Colors.white, Colors.white, Colors.transparent],
+              stops: [0.0, 0.1, 0.9, 1.0], // 10% purple, 80% transparent, 10% purple
+            ).createShader(Rect.fromLTRB(0, 0, rect.width, 0));
           },
         child: ListView.builder(
             controller: _scrollController,
