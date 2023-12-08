@@ -181,7 +181,7 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
                       return Container(
                         margin:
                         EdgeInsets.only(top: 75.h, left: 10.w, right: 10.w),
-                        child:  const Text("Sunucuya bağlanılamadı."));
+                        child:  const Text("Connection failed with server."));
                     }
                   },
                 ),
