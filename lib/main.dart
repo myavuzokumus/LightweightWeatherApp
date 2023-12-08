@@ -11,6 +11,7 @@ import '/pages/add_city.dart';
 import 'pages/main_page.dart';
 
 final cityDataBox = Hive.box('selectedCities');
+String lastSelectedCity = cityDataBox.get("lastSelected") ?? "Select City";
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
