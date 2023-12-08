@@ -37,60 +37,11 @@ final List<String> weekDays = [
   "Sunday",
 ];
 
-String getIconOfWeather(final String type, final String hour) {
-  final int newHour = int.parse(hour.substring(0,2));
-  switch (type) {
-    case "Sunny":
-      if (newHour > 6 && newHour < 19) {
-        return "assets/icons/lottie/clear-day.json";
-      } else {
-        return "assets/icons/lottie/clear-night.json";
-      }
-    case "Cloudy":
-      if (newHour > 6 && newHour < 19) {
-        return "assets/icons/lottie/cloudy.json";
-      } else {
-        return "assets/icons/lottie/extreme-night.json";
-      }
-    case "Rainy":
-      return "assets/icons/lottie/overcast-rain.json";
-    case "Snowy":
-      return "assets/icons/lottie/overcast-snow.json";
-
-    default:
-      return "assets/icons/lottie/clear-day.json";
-  }
-}
-
-String backgroundSplash(final String type, final String hour) {
-  final int newHour = int.parse(hour.substring(0,2));
-  switch (type) {
-    case "Sunny":
-      if (newHour > 6 && newHour < 19) {
-        return "assets/icons/lottie/rainbow-clear.json";
-      } else {
-        return "assets/icons/lottie/starry-night.json";
-      }
-    case "Cloudy":
-      if (newHour > 6 && newHour < 19) {
-        return "assets/icons/lottie/cloudy.json";
-      } else {
-        return "assets/icons/lottie/extreme-night.json";
-      }
-    case "Rainy":
-      return "assets/icons/lottie/raindrops.json";
-    case "Snowy":
-      return "assets/icons/lottie/snowman.json";
-    default:
-      return "assets/icons/lottie/clear-day.json";
-  }
-}
-
 List<Color> backgroundColor(final String type, final String hour) {
 
   final int newHour = int.parse(hour.substring(0,2));
   switch (type) {
-    case "Cloudy":
+    case "partly-cloudy-day":
       return [
         const Color(0xFFd4dde8),
         const Color(0xFFd4dde8)
@@ -122,22 +73,24 @@ List<Color> backgroundColor(final String type, final String hour) {
 }
 
 String getAnimationOfWeather(final String type, final String hour) {
-  final int newHour = int.parse(hour.substring(0,2));
+  final int newHour = int.parse(getTime().substring(0,2));
   switch (type) {
-    case "Sunny":
+    case  "clear-day":
+      return "assets/icons/lottie/clear-day.json";
+    case  "clear-night":
+        return "assets/icons/lottie/clear-night.json";
+    case ("partly-cloudy-day" || "partly-cloudy-night" || "cloudy"):
+      return "assets/icons/lottie/cloudy.json";
+    case "rain":
+      return "assets/icons/lottie/overcast-rain.json";
+    case "snow" || "snowy":
+      return "assets/icons/lottie/overcast-snow.json";
+    default:
       if (newHour > 6 && newHour < 19) {
         return "assets/icons/lottie/clear-day.json";
       } else {
         return "assets/icons/lottie/clear-night.json";
       }
-    case "Cloudy":
-      return "assets/icons/lottie/cloudy.json";
-    case "Rainy":
-      return "assets/icons/lottie/overcast-rain.json";
-    case "Snowy":
-      return "assets/icons/lottie/overcast-snow.json";
-    default:
-      return "assets/icons/lottie/clear-day.json";
   }
 }
 
