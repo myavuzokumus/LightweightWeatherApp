@@ -68,37 +68,46 @@ class _HourlyStatusCardState extends State<HourlyStatusCard> {
       width: 425,
       height: 150,
       margin: EdgeInsets.only(top: 25.h, bottom: 5.h),
-      child: ListView.builder(
-          controller: _scrollController,
-          scrollDirection: Axis.horizontal,
-          itemCount: hours.length,
-          itemBuilder: (final BuildContext context, final int index) {
-
-            return Card(
-              shadowColor: Colors.black,
-              color: Colors.indigo.withOpacity(0.25),
-              clipBehavior: Clip.hardEdge,
-              child: InkWell(
-                  splashColor: Colors.white.withAlpha(30),
-                  onTap: () {},
-                  child: Container(
-                    width: 75,
-                    padding: const EdgeInsets.all(3),
-                    color: currentTime == hours[index]
-                        ? Colors.indigo.shade300
-                        : Colors.transparent,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(hours[index]),
-                        Lottie.asset(getAnimationOfWeather(
-                            hourlyWeatherDetails[index].weatherType, hours[index])),
-                        Text("${hourlyWeatherDetails[index].temperature}°"),
-                      ],
-                    ),
-                  )),
-            );
-          }),
+      child: ShaderMask(
+          shaderCallback: (final rect) {
+            return const LinearGradient(
+              begin: Alignment.centerLeft,
+              end: Alignment.centerRight,
+              colors: [Colors.transparent, Colors.white, Colors.white, Colors.white, Colors.transparent],
+            ).createShader(Rect.fromLTRB(-50, 0, rect.width+25, 0));
+          },
+        child: ListView.builder(
+            controller: _scrollController,
+            scrollDirection: Axis.horizontal,
+            itemCount: hours.length,
+            itemBuilder: (final BuildContext context, final int index) {
+        
+              return Card(
+                shadowColor: Colors.black,
+                color: Colors.indigo.withOpacity(0.25),
+                clipBehavior: Clip.hardEdge,
+                child: InkWell(
+                    splashColor: Colors.white.withAlpha(30),
+                    onTap: () {},
+                    child: Container(
+                      width: 75,
+                      padding: const EdgeInsets.all(3),
+                      color: currentTime == hours[index]
+                          ? Colors.indigo.shade300
+                          : Colors.transparent,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(hours[index]),
+                          Lottie.asset(getAnimationOfWeather(
+                              hourlyWeatherDetails[index].weatherType, hours[index])),
+                          Text("${hourlyWeatherDetails[index].temperature}°"),
+                        ],
+                      ),
+                    )),
+              );
+            }),
+      ),
     );
   }
 }
