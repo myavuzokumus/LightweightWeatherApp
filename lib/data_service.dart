@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:uuid/uuid.dart';
@@ -10,7 +11,7 @@ mixin DataService {
 
   static Future<Map<String, dynamic>> getCityWeatherInfo(final String requestedCity) async {
 
-    final baseURL = Uri.parse("http://10.0.2.2:8000/weatherinfodetails");
+    final baseURL = (defaultTargetPlatform == TargetPlatform.android && defaultTargetPlatform == TargetPlatform.iOS) ? Uri.parse("http://10.0.2.2:8000/weatherinfodetails") : Uri.parse("http://localhost:8000/weatherinfodetails");
 
     final response = await http.get(baseURL);
 

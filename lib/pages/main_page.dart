@@ -56,10 +56,9 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
       returnedJsonData = DataService.getCityWeatherInfo(lastSelectedCity);
     });
 
-    if (mounted) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: Text("Page is reloaded.")));
-    }
+    WidgetsBinding.instance.addPostFrameCallback((final timeStamp) { ScaffoldMessenger.of(context)
+        .showSnackBar(const SnackBar(content: Text("Page is reloaded.")));});
+
 
     return returnedJsonData;
   }

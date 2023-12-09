@@ -7,12 +7,10 @@
 ![](/assets/layout1.png)
 
 ### TODO:
-Frontend (Flutter side):
-- APIs are not working on web version.
-
 Backend (Django & RestAPI):
 - Data will be refreshed every 15 minute from API.
 - Will be added files after project completely finished. (Need some fixes to security for API)
+- Google API could be moved on backend for run app on web. (Or just use package on flutter side, I'll look.)
 
 ## Installation
 
@@ -35,6 +33,9 @@ PLACES_API_KEY=key
 ```
 flutter run
 ```
+
+Note: If you wanna run app on web, you need to use `flutter run -d edge --web-browser-flag "--disable-web-security".
+Because Google API doesn't support CORS, so you need to this. But also you can move API to the proxy server and you fetch data from that or just use simple package for that. Your choice. 
 
 ## Packages
 
