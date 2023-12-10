@@ -44,7 +44,7 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
       refreshKey.currentState?.show();
     });
 
-    returnedJsonData = DataService.getCityWeatherInfo(lastSelectedCity);
+    returnedJsonData = DataService().getCityWeatherInfo(lastSelectedCity);
 
     super.initState();
   }
@@ -53,7 +53,7 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
 
     setState(() {
       refreshState = true;
-      returnedJsonData = DataService.getCityWeatherInfo(lastSelectedCity);
+      returnedJsonData = DataService().getCityWeatherInfo(lastSelectedCity);
     });
 
     WidgetsBinding.instance.addPostFrameCallback((final timeStamp) { ScaffoldMessenger.of(context)

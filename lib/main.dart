@@ -3,7 +3,6 @@ import 'dart:ui';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import '/pages/add_city.dart';
@@ -18,7 +17,7 @@ void main() async {
 
   await Hive.initFlutter();
   await Hive.openBox('selectedCities');
-  await dotenv.load(fileName: ".env");
+  //await dotenv.load(fileName: ".env");
 
   if (defaultTargetPlatform != TargetPlatform.iOS &&
       defaultTargetPlatform != TargetPlatform.android &&

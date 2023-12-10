@@ -42,7 +42,7 @@ class _AddCityState extends State<AddCity> {
           style: const TextStyle(color: Colors.black),
           decoration: const InputDecoration(hintText: 'Search city name...'),
           onChanged: (final value) async {
-            predictedList = await DataService.getSuggestion(value);
+            predictedList = await DataService().getSuggestion(value);
             setState(() {});
           },
         ),

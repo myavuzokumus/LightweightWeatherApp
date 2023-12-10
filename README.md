@@ -10,10 +10,10 @@
 Backend (Django & RestAPI):
 - Data will be refreshed every 15 minute from API.
 - Will be added files after project completely finished. (Need some fixes to security for API)
-- Google API could be moved on backend for run app on web. (Or just use package on flutter side, I'll look.)
 
 ## Installation
 
+### Flutter side
 1. Create a new Flutter project:
 ```
 flutter create weather_app
@@ -24,18 +24,13 @@ flutter create weather_app
 git clone https://github.com/myavuzokumus/WeatherApp.git
 ```
 
-3. Create ".env" file in root directory and add your Google Maps AutoComplete Places API Key in the file:
-```
-PLACES_API_KEY=key
-```
-
-4. Test your changes by running the app on an emulator or a physical device:
+3. Test your changes by running the app on an emulator or a physical device:
 ```
 flutter run
 ```
 
-Note: If you wanna run app on web, you need to use `flutter run -d edge --web-browser-flag "--disable-web-security".
-Because Google API doesn't support CORS, so you need to this. But also you can move API to the proxy server and you fetch data from that or just use simple package for that. Your choice. 
+> Note: If you wanna run app on web, you need to use `flutter run -d edge --web-browser-flag "--disable-web-security".
+> Because Google API doesn't support CORS, so you need to this. But also you can move API to the proxy server and you fetch data from that or just use simple package for that. Your choice.
 
 ## Packages
 
