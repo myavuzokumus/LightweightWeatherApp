@@ -62,6 +62,9 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
       {
         returnedJsonData = DataService().getCityWeatherInfo(lastSelectedCity);
       }
+      else {
+        returnedJsonData = Future.value({});
+      }
     });
 
     WidgetsBinding.instance.addPostFrameCallback((final timeStamp) {
