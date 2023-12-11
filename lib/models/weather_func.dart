@@ -28,13 +28,13 @@ final List<String> hours = <String>[
 ];
 
 final List<String> weekDays = [
+  "Sunday",
   "Monday",
   "Tuesday",
   "Wednesday",
   "Thursday",
   "Friday",
   "Saturday",
-  "Sunday",
 ];
 
 List<Color> backgroundColor(final String type, final String hour) {
