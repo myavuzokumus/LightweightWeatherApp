@@ -48,6 +48,9 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
     {
       returnedJsonData = DataService().getCityWeatherInfo(lastSelectedCity);
     }
+    else {
+      returnedJsonData = Future.value({});
+    }
 
     super.initState();
   }
@@ -191,7 +194,7 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
                   child: Container(
                       margin:
                           EdgeInsets.only(top: 75.h, left: 10.w, right: 10.w),
-                      child: const Text("Connection failed with server.")),
+                      child: const Text("Connection failed to the server.")),
                 ),
               );
             }

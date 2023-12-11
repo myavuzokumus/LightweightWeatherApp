@@ -8,7 +8,7 @@ import 'package:uuid/uuid.dart';
 
 class DataService {
 
-  final targetedServer = (defaultTargetPlatform == TargetPlatform.android && defaultTargetPlatform == TargetPlatform.iOS) ? "10.0.2.2:8000" : "127.0.0.1:8000";
+  final targetedServer = (defaultTargetPlatform == TargetPlatform.android || defaultTargetPlatform == TargetPlatform.iOS) ? "10.0.2.2:8000" : "127.0.0.1:8000";
 
   Future<Map<String, dynamic>> getCityWeatherInfo(final String requestedCity) async {
 

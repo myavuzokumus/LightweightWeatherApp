@@ -35,9 +35,11 @@ class _NextDaysCardState extends State<NextDaysCard> {
   @override
   void initState() {
 
-    dayDetails = getDailyData();
-    nextDay = nextDays(nextDay: 6, currentDay: dayDetails[1].day);
-    yesterday = dayDetails[0];
+    if (lastSelectedCity != "Select City") {
+      dayDetails = getDailyData();
+      nextDay = nextDays(nextDay: 6, currentDay: dayDetails[1].day);
+      yesterday = dayDetails[0];
+    }
 
     super.initState();
   }
@@ -45,7 +47,7 @@ class _NextDaysCardState extends State<NextDaysCard> {
   @override
   Widget build(final BuildContext context) {
 
-    if (refreshState == true) {
+    if (refreshState == true && lastSelectedCity != "Select City") {
       setState(() {
         dayDetails = getDailyData();
         nextDay = nextDays(nextDay: 6, currentDay: dayDetails[1].day);
@@ -112,6 +114,8 @@ class _NextDaysCardState extends State<NextDaysCard> {
                       itemBuilder:
                           (final BuildContext context, final int index) {
 
+                        DailyWeather dayData = dayDetails[index + 2];
+
                         return InkWell(
                           splashColor: Colors.blue.withAlpha(30),
                           onTap: () {
@@ -129,7 +133,7 @@ class _NextDaysCardState extends State<NextDaysCard> {
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 16.spMin))),
-                              Text("${dayDetails[index].humidity}",
+                              Text("${dayData.humidity}",
                                   style: TextStyle(fontSize: 16.spMin)),
                               Lottie.asset("assets/icons/lottie/humidity.json",
                                   width: 35.spMin, animate: false),
@@ -137,18 +141,18 @@ class _NextDaysCardState extends State<NextDaysCard> {
                               SizedBox(
                                 width: 75.spMin,
                                 child: Text(
-                                    "${dayDetails[index].dayTemperature}° / ${dayDetails[index].nightTemperature}°",
+                                    "${dayData.dayTemperature}° / ${dayData.nightTemperature}°",
                                     style: TextStyle(fontSize: 16.spMin)),
                               ),
                               SizedBox(width: 5.w),
                               Lottie.asset(
                                   getAnimationOfWeather(
-                                      dayDetails[index].dayWeather, "09:00"),
+                                      dayData.dayWeather, "09:00"),
                                   width: 30.spMin,
                                   animate: false),
                               Lottie.asset(
                                   getAnimationOfWeather(
-                                      dayDetails[index].nightWeather, "19:00"),
+                                      dayData.nightWeather, "19:00"),
                                   width: 30.spMin,
                                   animate: false),
                             ],

@@ -141,8 +141,8 @@ List<String> nextDays({required final int nextDay, required final DateTime curre
 
   final List<String> result = [];
 
-  for (int i = 0; i < nextDay; i++) {
-    result.add(weekDays[(dayNum + i + 1) % 7]);
+  for (int i = 1; i < nextDay; i++) {
+    result.add(weekDays[(dayNum + i) % 7]);
   }
 
   return result;
