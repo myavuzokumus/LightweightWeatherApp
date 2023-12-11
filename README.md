@@ -7,9 +7,7 @@
 ![](/assets/layout1.png)
 
 ### TODO:
-Backend (Django & RestAPI):
-- Data will be refreshed every 15 minute from API.
-- Will be added files after project completely finished. (Need some fixes to security for API)
+- Django & RestAPI backend is finished but I am looking for how to secure API's token on publish build.
 
 ## Installation
 
