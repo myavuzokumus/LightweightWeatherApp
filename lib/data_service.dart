@@ -4,7 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:uuid/uuid.dart';
 
-import 'models/weather_info.dart';
+//import 'models/weather_info.dart';
 
 class DataService {
 
@@ -12,13 +12,16 @@ class DataService {
 
   Future<Map<String, dynamic>> getCityWeatherInfo(final String requestedCity) async {
 
-    final baseURL = Uri.parse("http://$targetedServer/weatherinfodetails");
 
+    final baseURL = Uri.parse("http://$targetedServer/weatherinfodetails?city=$requestedCity");
     final response = await http.get(baseURL);
 
     if (response.statusCode == 200){
-      final List<dynamic> json = jsonDecode(utf8.decode(response.bodyBytes));
-      final element = json.firstWhere((final map) => (WeatherInfo.fromMap(map).city == requestedCity), orElse: () => null);
+      final json = jsonDecode(utf8.decode(response.bodyBytes));
+
+      final element = (json["city"] != null) ? json : null;
+
+      //final element = json.firstWhere((final map) => (WeatherInfo.fromMap(map).city == requestedCity), orElse: () => null);
 
       if (element == null ){
 
@@ -61,7 +64,7 @@ class DataService {
     };
 
 
-    final postResponse = await http.post(baseURL, body: params);
+    final postResponse = await http.post(baseURL, body: params, headers: {"Access-Control-Allow-Origin": "*"});
 
     if (postResponse.statusCode == 200) {
 
