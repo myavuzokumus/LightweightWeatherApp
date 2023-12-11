@@ -44,7 +44,10 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
       refreshKey.currentState?.show();
     });
 
-    returnedJsonData = DataService().getCityWeatherInfo(lastSelectedCity);
+    if (lastSelectedCity != "Select City")
+    {
+      returnedJsonData = DataService().getCityWeatherInfo(lastSelectedCity);
+    }
 
     super.initState();
   }
@@ -52,7 +55,10 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
   Future<Map<String, dynamic>> refreshCityInfo() async {
     setState(() {
       refreshState = true;
-      returnedJsonData = DataService().getCityWeatherInfo(lastSelectedCity);
+      if (lastSelectedCity != "Select City")
+      {
+        returnedJsonData = DataService().getCityWeatherInfo(lastSelectedCity);
+      }
     });
 
     WidgetsBinding.instance.addPostFrameCallback((final timeStamp) {
@@ -216,7 +222,7 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
               final int cityCount = cities.length;
 
               return SizedBox(
-                height: cityCount > 11 ? 35 + (cityCount * 50) : 575,
+                height: cityCount > 11 ? 35 + (cityCount * 50) : 500,
                 child: cityCount == 0
                     ? const Text("No city added yet.")
                     : ListView.builder(

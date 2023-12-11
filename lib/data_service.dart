@@ -8,13 +8,13 @@ import 'package:uuid/uuid.dart';
 
 class DataService {
 
-  final targetedServer = (defaultTargetPlatform == TargetPlatform.android && defaultTargetPlatform == TargetPlatform.iOS) ? "10.0.2.2:8000" : "localhost:8000";
+  final targetedServer = (defaultTargetPlatform == TargetPlatform.android && defaultTargetPlatform == TargetPlatform.iOS) ? "10.0.2.2:8000" : "127.0.0.1:8000";
 
   Future<Map<String, dynamic>> getCityWeatherInfo(final String requestedCity) async {
 
 
-    final baseURL = Uri.parse("http://$targetedServer/weatherinfodetails?city=$requestedCity");
-    final response = await http.get(baseURL);
+    final baseURL = Uri.parse("http://$targetedServer/api/weather-info?city=$requestedCity");
+    final response = await http.get(baseURL, headers: {"Access-Control-Allow-Origin": "*"});
 
     if (response.statusCode == 200){
       final json = jsonDecode(utf8.decode(response.bodyBytes));
