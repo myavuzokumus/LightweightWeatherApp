@@ -8,7 +8,7 @@ import 'package:uuid/uuid.dart';
 
 class DataService {
 
-  final targetedServer = (defaultTargetPlatform == TargetPlatform.android || defaultTargetPlatform == TargetPlatform.iOS) ? "10.0.2.2:8000" : "127.0.0.1:8000";
+  final targetedServer = (defaultTargetPlatform == TargetPlatform.android || defaultTargetPlatform == TargetPlatform.iOS) ? "10.0.2.2:8000" : "localhost:8000";
 
   Future<Map<String, dynamic>> getCityWeatherInfo(final String requestedCity) async {
 
@@ -25,12 +25,14 @@ class DataService {
 
       if (element == null ){
 
+        final postURL = Uri.parse("http://$targetedServer/api/weather-info");
+
         final params = {
           "message": "No data found for $requestedCity",
           "city": requestedCity
         };
 
-        final postResponse = await http.post(baseURL, body: params);
+        final postResponse = await http.post(postURL, body: params, headers: {"Access-Control-Allow-Origin": "*"});
 
         if (postResponse.statusCode == 200) {
           final postData = jsonDecode(postResponse.body);
@@ -56,13 +58,11 @@ class DataService {
 
     final String uuid = const Uuid().v4();
 
-
     final params = {
       "message": "Token sended",
       "uuid": uuid,
       "suggestionWord": suggestionWord
     };
-
 
     final postResponse = await http.post(baseURL, body: params, headers: {"Access-Control-Allow-Origin": "*"});
 
