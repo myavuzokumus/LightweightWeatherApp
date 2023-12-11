@@ -29,6 +29,7 @@ flutter run
 
 > Note: If you wanna run app on web, you need to use `flutter run -d edge --web-browser-flag "--disable-web-security".
 > Because Google API doesn't support CORS, so you need to this. But also you can move API to the proxy server and you fetch data from that or just use simple package for that. Your choice.
+> So I already do it. Google API working on backend right now!
 
 ## Packages
 
