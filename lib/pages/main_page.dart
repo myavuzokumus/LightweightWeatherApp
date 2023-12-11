@@ -50,15 +50,15 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
   }
 
   Future<Map<String, dynamic>> refreshCityInfo() async {
-
     setState(() {
       refreshState = true;
       returnedJsonData = DataService().getCityWeatherInfo(lastSelectedCity);
     });
 
-    WidgetsBinding.instance.addPostFrameCallback((final timeStamp) { ScaffoldMessenger.of(context)
-        .showSnackBar(const SnackBar(content: Text("Page is reloaded.")));});
-
+    WidgetsBinding.instance.addPostFrameCallback((final timeStamp) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(const SnackBar(content: Text("Page is reloaded.")));
+    });
 
     return returnedJsonData;
   }
@@ -109,11 +109,13 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
           future: returnedJsonData,
           builder: (final BuildContext context,
               final AsyncSnapshot<dynamic> snapshot) {
-
             if (snapshot.hasData) {
-
               final Map<String, dynamic> returnedJsonData = snapshot.data;
-              weatherInfo = WeatherInfo.fromMap(returnedJsonData);
+
+              lastSelectedCity != "Select City"
+                  ? weatherInfo = WeatherInfo.fromMap(returnedJsonData)
+                  : weatherInfo =
+                      WeatherInfo(lastSelectedCity, "Sunny", 0, 0, 0, 0, 0);
 
               return Stack(children: [
                 Container(
@@ -181,7 +183,8 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
                 child: SingleChildScrollView(
                   physics: const AlwaysScrollableScrollPhysics(),
                   child: Container(
-                      margin: EdgeInsets.only(top: 75.h, left: 10.w, right: 10.w),
+                      margin:
+                          EdgeInsets.only(top: 75.h, left: 10.w, right: 10.w),
                       child: const Text("Connection failed with server.")),
                 ),
               );
@@ -213,7 +216,7 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
               final int cityCount = cities.length;
 
               return SizedBox(
-                height: cityCount < 11 ? 35 + (cityCount * 50) : 575,
+                height: cityCount > 11 ? 35 + (cityCount * 50) : 575,
                 child: cityCount == 0
                     ? const Text("No city added yet.")
                     : ListView.builder(
