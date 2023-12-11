@@ -114,7 +114,7 @@ class _NextDaysCardState extends State<NextDaysCard> {
                       itemBuilder:
                           (final BuildContext context, final int index) {
 
-                        DailyWeather dayData = dayDetails[index + 2];
+                        final DailyWeather dayData = dayDetails[index + 2];
 
                         return InkWell(
                           splashColor: Colors.blue.withAlpha(30),
