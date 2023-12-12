@@ -14,7 +14,7 @@ import 'main_page_widgets/hourly_status_card.dart';
 import 'main_page_widgets/next_days_card.dart';
 import 'main_page_widgets/weather_title.dart';
 
-bool refreshState = false;
+//bool refreshState = false;
 
 class WeatherHomePage extends StatefulWidget {
   const WeatherHomePage({super.key});
@@ -57,7 +57,7 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
 
   Future<Map<String, dynamic>> refreshCityInfo() async {
     setState(() {
-      refreshState = true;
+      //refreshState = true;
       if (lastSelectedCity != "Select City")
       {
         returnedJsonData = DataService().getCityWeatherInfo(lastSelectedCity);

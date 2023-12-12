@@ -6,7 +6,6 @@ import '../../main.dart';
 import '../../models/daily_weather.dart';
 import '../../models/weather_func.dart';
 import '../../models/weather_info.dart';
-import '../main_page.dart';
 
 class NextDaysCard extends StatefulWidget {
   const NextDaysCard({required this.weatherInfo, super.key, required this.returnedJsonData});
@@ -20,20 +19,25 @@ class NextDaysCard extends StatefulWidget {
 
 class _NextDaysCardState extends State<NextDaysCard> {
 
+  late List<DailyWeather> dayDetails;
   late List<String> nextDay;
-
   late DailyWeather yesterday;
 
-  late List<DailyWeather> dayDetails;
-
   List<DailyWeather> getDailyData() {
-
     return widget.returnedJsonData["daily"].map<DailyWeather>( (final value) => widget.weatherInfo.dailyInfo(value)).toList();
-
   }
 
   @override
-  void initState() {
+  Widget build(final BuildContext context) {
+
+/*    if (refreshState == true && lastSelectedCity != "Select City") {
+      setState(() {
+        dayDetails = getDailyData();
+        nextDay = nextDays(nextDay: 6, currentDay: dayDetails[1].day);
+        yesterday = dayDetails[0];
+        refreshState = false;
+      });
+    }*/
 
     if (lastSelectedCity != "Select City") {
       dayDetails = getDailyData();
@@ -41,20 +45,6 @@ class _NextDaysCardState extends State<NextDaysCard> {
       yesterday = dayDetails[0];
     }
 
-    super.initState();
-  }
-
-  @override
-  Widget build(final BuildContext context) {
-
-    if (refreshState == true && lastSelectedCity != "Select City") {
-      setState(() {
-        dayDetails = getDailyData();
-        nextDay = nextDays(nextDay: 6, currentDay: dayDetails[1].day);
-        yesterday = dayDetails[0];
-        refreshState = false;
-      });
-    }
 
     return Center(
       child: Card(

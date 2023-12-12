@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lottie/lottie.dart';
 
+import '../../main.dart';
 import '../../models/hourly_weather.dart';
 import '../../models/weather_func.dart';
 import '../../models/weather_info.dart';
-import '../main_page.dart';
 
 class HourlyStatusCard extends StatefulWidget {
   const HourlyStatusCard({required this.weatherInfo, required this.currentTime, super.key, required this.returnedJsonData});
@@ -20,7 +20,7 @@ class HourlyStatusCard extends StatefulWidget {
 
 class _HourlyStatusCardState extends State<HourlyStatusCard> {
 
-  late final ScrollController _scrollController;
+  final ScrollController scrollController = ScrollController();
 
   late List<HourlyWeather> hourlyWeatherDetails;
 
@@ -32,37 +32,32 @@ class _HourlyStatusCardState extends State<HourlyStatusCard> {
   }
 
   @override
-  void initState() {
-
-    hourlyWeatherDetails = getHoursData();
-    _scrollController = ScrollController();
-    currentTime = widget.currentTime;
-
-    super.initState();
-  }
-
-  @override
   void dispose() {
-    _scrollController.dispose();
+    scrollController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(final BuildContext context) {
 
-    if (refreshState == true) {
+/*    if (refreshState == true) {
       setState(() {
         hourlyWeatherDetails = getHoursData();
         currentTime = widget.currentTime;
       });
-    }
+    }*/
 
     WidgetsBinding.instance.addPostFrameCallback((final _) {
-      if (_scrollController.hasClients) {
-        _scrollController.animateTo(hours.indexOf(currentTime).toDouble() * 76,
+      if (scrollController.hasClients) {
+        scrollController.animateTo(hours.indexOf(currentTime).toDouble() * 76,
             duration: const Duration(seconds: 1), curve: Curves.easeOut);
       }
     });
+
+    if (lastSelectedCity != "Select City") {
+      hourlyWeatherDetails = getHoursData();
+      currentTime = widget.currentTime;
+    }
 
     return Container(
       width: 425,
@@ -78,7 +73,7 @@ class _HourlyStatusCardState extends State<HourlyStatusCard> {
             ).createShader(Rect.fromLTRB(0, 0, rect.width, 0));
           },
         child: ListView.builder(
-            controller: _scrollController,
+            controller: scrollController,
             scrollDirection: Axis.horizontal,
             itemCount: hours.length,
             itemBuilder: (final BuildContext context, final int index) {
