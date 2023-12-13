@@ -6,9 +6,6 @@
 
 ![](/assets/layout1.png)
 
-### TODO:
-- Django & RestAPI backend is finished but I am looking for how to secure API's token on publish build.
-
 ## Installation
 
 ### Flutter side
@@ -27,9 +24,7 @@ git clone https://github.com/myavuzokumus/WeatherApp.git
 flutter run
 ```
 
-> Note: If you wanna run app on web, you need to use `flutter run -d edge --web-browser-flag "--disable-web-security".
-> Because Google API doesn't support CORS, so you need to this. But also you can move API to the proxy server and you fetch data from that or just use simple package for that. Your choice.
-> So I already do it. Google API working on backend right now!
+> Note: All backend things are on the Django side. So if you want to use the app with functionality, you also need to run the Django backend.
 
 ## Packages
 
@@ -42,6 +37,11 @@ flutter run
 
 - [visualcrossing] - Weather Data
 - [Google Maps AutoComplete Places]- City Data
+
+## Assets Licence
+
+- [Product Sans](https://fonts.google.com/license/productsans) - Product Sans
+- [weather-icons](https://github.com/basmilius/weather-icons) - weather-icons
 
 ## License
 
