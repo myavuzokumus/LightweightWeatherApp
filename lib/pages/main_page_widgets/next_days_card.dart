@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lottie/lottie.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../main.dart';
 import '../../models/daily_weather.dart';
@@ -108,11 +109,17 @@ class _NextDaysCardState extends State<NextDaysCard> {
 
                         return InkWell(
                           splashColor: Colors.blue.withAlpha(30),
-                          onTap: () {
+                          onTap: () async {
                             ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
                                     content: Text(
                                         "Redirecting to site about that day's weather information...")));
+                            final Uri url =
+                            Uri.parse('https://www.visualcrossing.com/weather-history/$lastSelectedCity/metric/last7days');
+                            if (!await launchUrl(url)) {
+                              throw Exception('Could not launch $url');
+                            }
+
                           },
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
