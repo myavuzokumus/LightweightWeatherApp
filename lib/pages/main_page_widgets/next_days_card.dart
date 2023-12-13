@@ -115,7 +115,7 @@ class _NextDaysCardState extends State<NextDaysCard> {
                                     content: Text(
                                         "Redirecting to site about that day's weather information...")));
                             final Uri url =
-                            Uri.parse('https://www.visualcrossing.com/weather-history/$lastSelectedCity/metric/last7days');
+                            Uri.parse('https://www.visualcrossing.com/weather-forecast/$lastSelectedCity/metric');
                             if (!await launchUrl(url)) {
                               throw Exception('Could not launch $url');
                             }
