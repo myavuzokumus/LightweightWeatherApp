@@ -51,13 +51,12 @@ class WeatherAppMain extends StatelessWidget {
           '/': (final context) => const WeatherHomePage(),
           '/addCity': (final context) => const AddCity(),
         },
-        scrollBehavior: const MaterialScrollBehavior().copyWith(
-          dragDevices: {
-            PointerDeviceKind.mouse,
-            PointerDeviceKind.touch,
-          }),
-
-          theme: ThemeData(
+        scrollBehavior: const MaterialScrollBehavior().copyWith(dragDevices: {
+          PointerDeviceKind.mouse,
+          PointerDeviceKind.touch,
+        }),
+        theme: ThemeData(
+          fontFamily: 'Product Sans',
           useMaterial3: true,
           listTileTheme: const ListTileThemeData(
               textColor: Colors.white, iconColor: Colors.white),
@@ -71,6 +70,7 @@ class WeatherAppMain extends StatelessWidget {
           textTheme: const TextTheme(
             bodyLarge: TextStyle(color: Colors.white),
             bodyMedium: TextStyle(color: Colors.white, fontSize: 16),
+            titleLarge: TextStyle(color: Colors.white),
           ).apply(bodyColor: Colors.white, displayColor: Colors.white),
         ),
       ),

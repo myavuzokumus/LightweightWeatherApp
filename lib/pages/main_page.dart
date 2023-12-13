@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:lightweightweather/data_service.dart';
 import 'package:lottie/lottie.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../main.dart';
 import '../models/weather_func.dart';
@@ -44,11 +45,9 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
       refreshKey.currentState?.show();
     });
 
-    if (lastSelectedCity != "Select City")
-    {
+    if (lastSelectedCity != "Select City") {
       returnedJsonData = DataService().getCityWeatherInfo(lastSelectedCity);
-    }
-    else {
+    } else {
       returnedJsonData = Future.value({});
     }
 
@@ -58,11 +57,9 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
   Future<Map<String, dynamic>> refreshCityInfo() async {
     setState(() {
       //refreshState = true;
-      if (lastSelectedCity != "Select City")
-      {
+      if (lastSelectedCity != "Select City") {
         returnedJsonData = DataService().getCityWeatherInfo(lastSelectedCity);
-      }
-      else {
+      } else {
         returnedJsonData = Future.value({});
       }
     });
@@ -214,8 +211,12 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
       elevation: 10.0,
       child: Column(
         children: [
-          Container(
-            height: 75,
+          Padding(
+            padding: const EdgeInsets.fromLTRB(28, 16, 16, 10),
+            child: Text(
+              'Cities',
+              style: Theme.of(context).textTheme.titleLarge,
+            ),
           ),
           ValueListenableBuilder<Box>(
             valueListenable:
@@ -228,12 +229,11 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
               final int cityCount = cities.length;
 
               return SizedBox(
-                height: cityCount > 11 ? 35 + (cityCount * 50) : 500,
+                height: cityCount < 11 ? (cityCount * 50) : 500,
                 child: cityCount == 0
                     ? const Text("No city added yet.")
-                    : ListView.builder(
+                    : ListView.separated(
                         itemCount: cities.length,
-                        itemExtent: 50,
                         itemBuilder:
                             (final BuildContext context, final int index) {
                           final String city = cities.elementAt(index);
@@ -288,10 +288,14 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
                               },
                             ),
                           );
-                        },
+                        }, separatorBuilder: (final BuildContext context, final int index) { return const SizedBox(height: 5); },
                       ),
               );
             },
+          ),
+          const Padding(
+            padding: EdgeInsets.fromLTRB(28, 16, 28, 10),
+            child: Divider(),
           ),
           FilledButton.tonalIcon(
               label: const Text('Add city'),
@@ -299,6 +303,32 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
                 Navigator.pushNamed(context, '/addCity');
               },
               icon: const Icon(Icons.add)),
+          Expanded(
+              child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                InkWell(
+                  onTap: () async {
+                    final Uri url =
+                    Uri.parse('https://www.visualcrossing.com/weather-data');
+                    if (!await launchUrl(url)) {
+                      throw Exception('Could not launch $url');
+                    }
+                  },
+                  child: Column(
+                    children: [
+                      const Text("Weather data provided by"),
+                      Image.asset("assets/data_provider/visualcrossing.png",
+                          width: 196),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ))
         ],
       ),
     );
