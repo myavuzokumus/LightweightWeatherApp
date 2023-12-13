@@ -233,6 +233,7 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
                 child: cityCount == 0
                     ? const Text("No city added yet.")
                     : ListView.separated(
+                        physics: const BouncingScrollPhysics(),
                         itemCount: cities.length,
                         itemBuilder:
                             (final BuildContext context, final int index) {
