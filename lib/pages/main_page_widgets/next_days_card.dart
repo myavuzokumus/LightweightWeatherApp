@@ -8,24 +8,14 @@ import '../../models/daily_weather.dart';
 import '../../models/weather_func.dart';
 import '../../models/weather_info.dart';
 
-class NextDaysCard extends StatefulWidget {
+class NextDaysCard extends StatelessWidget {
   const NextDaysCard({required this.weatherInfo, super.key, required this.returnedJsonData});
 
   final WeatherInfo weatherInfo;
   final Map<String, dynamic> returnedJsonData;
 
-  @override
-  State<NextDaysCard> createState() => _NextDaysCardState();
-}
-
-class _NextDaysCardState extends State<NextDaysCard> {
-
-  late List<DailyWeather> dayDetails;
-  late List<String> nextDay;
-  late DailyWeather yesterday;
-
   List<DailyWeather> getDailyData() {
-    return widget.returnedJsonData["daily"].map<DailyWeather>( (final value) => widget.weatherInfo.dailyInfo(value)).toList();
+    return returnedJsonData["daily"].map<DailyWeather>( (final value) => weatherInfo.dailyInfo(value)).toList();
   }
 
   @override
@@ -40,12 +30,15 @@ class _NextDaysCardState extends State<NextDaysCard> {
       });
     }*/
 
-    if (lastSelectedCity != "Select City") {
+    List<DailyWeather>? dayDetails = null;
+    List<String>? nextDay = null;
+    DailyWeather? yesterday;
+
+    if (lastSelectedCity != "Select City" && returnedJsonData.isNotEmpty) {
       dayDetails = getDailyData();
       nextDay = nextDays(nextDay: 6, currentDay: dayDetails[1].day);
       yesterday = dayDetails[0];
     }
-
 
     return Center(
       child: Card(
@@ -70,7 +63,7 @@ class _NextDaysCardState extends State<NextDaysCard> {
                           flex: 2,
                           child: Text("Yesterday",
                               style: TextStyle(fontSize: 16.spMin))),
-                      Text("${yesterday.humidity}",
+                      Text("${yesterday?.humidity}",
                           style: TextStyle(fontSize: 16.spMin)),
                       Lottie.asset("assets/icons/lottie/humidity.json",
                           width: 35.spMin, animate: false),
@@ -78,16 +71,16 @@ class _NextDaysCardState extends State<NextDaysCard> {
                       SizedBox(
                         width: 75.spMin,
                         child: Text(
-                            "${yesterday.dayTemperature}° / ${yesterday.nightTemperature}°",
+                            "${yesterday?.dayTemperature}° / ${yesterday?.nightTemperature}°",
                             style: TextStyle(fontSize: 16.spMin)),
                       ),
                       SizedBox(width: 5.w),
                       Lottie.asset(
-                          getAnimationOfWeather(yesterday.dayWeather, "09:00"),
+                          getAnimationOfWeather(yesterday?.dayWeather ?? "Sunny", "09:00"),
                           width: 30.spMin,
                           animate: false),
                       Lottie.asset(
-                          getAnimationOfWeather(yesterday.nightWeather, "19:00"),
+                          getAnimationOfWeather(yesterday?.nightWeather ?? "Sunny", "19:00"),
                           width: 30.spMin,
                           animate: false),
                     ],
@@ -105,7 +98,7 @@ class _NextDaysCardState extends State<NextDaysCard> {
                       itemBuilder:
                           (final BuildContext context, final int index) {
 
-                        final DailyWeather dayData = dayDetails[index + 2];
+                        final DailyWeather? dayData = dayDetails?[index + 2];
 
                         return InkWell(
                           splashColor: Colors.blue.withAlpha(30),
@@ -126,11 +119,11 @@ class _NextDaysCardState extends State<NextDaysCard> {
                             children: <Widget>[
                               Expanded(
                                   flex: 2,
-                                  child: Text(nextDay[index],
+                                  child: Text(nextDay?[index] ?? "Null",
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 16.spMin))),
-                              Text("${dayData.humidity}",
+                              Text("${dayData?.humidity}",
                                   style: TextStyle(fontSize: 16.spMin)),
                               Lottie.asset("assets/icons/lottie/humidity.json",
                                   width: 35.spMin, animate: false),
@@ -138,18 +131,18 @@ class _NextDaysCardState extends State<NextDaysCard> {
                               SizedBox(
                                 width: 75.spMin,
                                 child: Text(
-                                    "${dayData.dayTemperature}° / ${dayData.nightTemperature}°",
+                                    "${dayData?.dayTemperature}° / ${dayData?.nightTemperature}°",
                                     style: TextStyle(fontSize: 16.spMin)),
                               ),
                               SizedBox(width: 5.w),
                               Lottie.asset(
                                   getAnimationOfWeather(
-                                      dayData.dayWeather, "09:00"),
+                                      dayData?.dayWeather ?? "Sunny", "09:00"),
                                   width: 30.spMin,
                                   animate: false),
                               Lottie.asset(
                                   getAnimationOfWeather(
-                                      dayData.nightWeather, "19:00"),
+                                      dayData?.nightWeather ?? "Sunny", "19:00"),
                                   width: 30.spMin,
                                   animate: false),
                             ],

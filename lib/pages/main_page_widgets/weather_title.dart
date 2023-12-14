@@ -5,23 +5,14 @@ import 'package:lottie/lottie.dart';
 import '../../models/weather_func.dart';
 import '../../models/weather_info.dart';
 
-class WeatherTitle extends StatefulWidget {
+class WeatherTitle extends StatelessWidget {
   const WeatherTitle({required this.weatherInfo, super.key, required this.currentTime});
 
   final WeatherInfo weatherInfo;
   final String currentTime;
 
   @override
-  State<WeatherTitle> createState() => _WeatherTitleState();
-}
-
-class _WeatherTitleState extends State<WeatherTitle> {
-
-  @override
   Widget build(final BuildContext context) {
-
-    final WeatherInfo weatherInfo = widget.weatherInfo;
-    final String currentTime = widget.currentTime;
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,

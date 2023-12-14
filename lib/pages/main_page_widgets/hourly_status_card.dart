@@ -7,34 +7,20 @@ import '../../models/hourly_weather.dart';
 import '../../models/weather_func.dart';
 import '../../models/weather_info.dart';
 
-class HourlyStatusCard extends StatefulWidget {
-  const HourlyStatusCard({required this.weatherInfo, required this.currentTime, super.key, required this.returnedJsonData});
+class HourlyStatusCard extends StatelessWidget {
+  HourlyStatusCard({required this.weatherInfo, required this.currentTime, super.key, required this.returnedJsonData});
 
   final WeatherInfo weatherInfo;
   final String currentTime;
   final Map<String, dynamic> returnedJsonData;
 
-  @override
-  State<HourlyStatusCard> createState() => _HourlyStatusCardState();
-}
-
-class _HourlyStatusCardState extends State<HourlyStatusCard> {
-
   final ScrollController scrollController = ScrollController();
 
-  late List<HourlyWeather> hourlyWeatherDetails;
-
-  late String currentTime;
+  late final List<HourlyWeather> hourlyWeatherDetails;
 
   List<HourlyWeather> getHoursData() {
 
-    return widget.returnedJsonData["hourly"].map<HourlyWeather>( (final value) => widget.weatherInfo.hourlyInfo(value)).toList();
-  }
-
-  @override
-  void dispose() {
-    scrollController.dispose();
-    super.dispose();
+    return returnedJsonData["hourly"].map<HourlyWeather>( (final value) => weatherInfo.hourlyInfo(value)).toList();
   }
 
   @override
@@ -54,9 +40,8 @@ class _HourlyStatusCardState extends State<HourlyStatusCard> {
       }
     });
 
-    if (lastSelectedCity != "Select City") {
+    if (lastSelectedCity != "Select City" || returnedJsonData.isNotEmpty) {
       hourlyWeatherDetails = getHoursData();
-      currentTime = widget.currentTime;
     }
 
     return Container(

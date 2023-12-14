@@ -117,11 +117,12 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
         child: FutureBuilder(
           future: returnedJsonData,
           builder: (final BuildContext context,
-              final AsyncSnapshot<dynamic> snapshot) {
-            if (snapshot.hasData) {
-              final Map<String, dynamic> returnedJsonData = snapshot.data;
+              final AsyncSnapshot<Map<String, dynamic>> snapshot) {
 
-              lastSelectedCity != "Select City"
+            if (snapshot.hasData) {
+              final Map<String, dynamic> returnedJsonData = snapshot.data!;
+
+              snapshot.data!.isNotEmpty
                   ? weatherInfo = WeatherInfo.fromMap(returnedJsonData)
                   : weatherInfo =
                       WeatherInfo(lastSelectedCity, "Sunny", 0, 0, 0, 0, 0);
@@ -169,7 +170,7 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
                           direction:
                               isScreenWide ? Axis.horizontal : Axis.vertical,
                           children: [
-                            if (lastSelectedCity != "Select City")
+                            if (snapshot.data!.isNotEmpty)
                               HourlyStatusCard(
                                 weatherInfo: weatherInfo,
                                 currentTime: currentTime,
