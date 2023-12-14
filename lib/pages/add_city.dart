@@ -38,6 +38,7 @@ class _AddCityState extends State<AddCity> {
       appBar: AppBar(
         iconTheme: const IconThemeData(color: Colors.black),
         title: TextField(
+          autofocus: true,
           controller: searchTextController,
           style: const TextStyle(color: Colors.black),
           decoration: const InputDecoration(hintText: 'Search city name...'),
