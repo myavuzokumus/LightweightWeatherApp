@@ -230,7 +230,7 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
               final int cityCount = cities.length;
 
               return SizedBox(
-                height: cityCount < 11 ? (cityCount == 0 ? 20 : (cityCount * 50)) : 500,
+                height: cityCount < 11 ? (cityCount == 0 ? 20 : 35 + (cityCount * 50)) : 500,
                 child: cityCount == 0
                     ? const Text("No city added yet.")
                     : ListView.separated(
