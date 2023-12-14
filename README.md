@@ -24,7 +24,9 @@ git clone https://github.com/myavuzokumus/WeatherApp.git
 flutter run
 ```
 
-> Note: All backend things are on the Django side. So if you want to use the app with functionality, you also need to run the Django backend.
+> [!NOTE]
+> All backend things are on the Django side. So if you want to use the app with functionality, you also need to run the Django backend.
+> https://github.com/myavuzokumus/LightweightWeatherApp-Backend
 
 ## Packages
 
