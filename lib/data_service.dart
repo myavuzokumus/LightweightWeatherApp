@@ -2,7 +2,6 @@ import 'dart:convert';
 
 //import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
-import 'package:uuid/uuid.dart';
 
 //import 'models/weather_info.dart';
 
@@ -53,11 +52,9 @@ class DataService {
     }
   }
 
-  Future<List<String>> getSuggestion(final String suggestionWord) async {
+  Future<List<String>> getSuggestion(final String suggestionWord, String uuid) async {
 
     final baseURL = Uri.parse("https://$targetedServer/api/places");
-
-    final String uuid = const Uuid().v4();
 
     final params = {
       "message": "Token sended",

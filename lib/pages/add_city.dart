@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:uuid/uuid.dart';
 
 import '../data_service.dart';
 import '../main.dart';
@@ -20,6 +21,8 @@ class _AddCityState extends State<AddCity> {
   List<String> predictedList = <String>[];
 
   int foundedCityCount = 0;
+
+  final String uuid = const Uuid().v4();
 
   @override
   void initState() {
@@ -43,7 +46,7 @@ class _AddCityState extends State<AddCity> {
           style: const TextStyle(color: Colors.black),
           decoration: const InputDecoration(hintText: 'Search city name...'),
           onChanged: (final value) async {
-            predictedList = await DataService().getSuggestion(value);
+            predictedList = await DataService().getSuggestion(value, uuid);
             setState(() {});
           },
         ),
