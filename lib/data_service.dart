@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:flutter/foundation.dart';
+//import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:uuid/uuid.dart';
 
@@ -8,12 +8,13 @@ import 'package:uuid/uuid.dart';
 
 class DataService {
 
-  final targetedServer = (defaultTargetPlatform == TargetPlatform.android || defaultTargetPlatform == TargetPlatform.iOS) ? "10.0.2.2:8000" : "localhost:8000";
+  //final targetedServer = (defaultTargetPlatform == TargetPlatform.android || defaultTargetPlatform == TargetPlatform.iOS) ? "10.0.2.2:8000" : "localhost:8000";
+  final targetedServer = "weather.sc-riber.games";
 
   Future<Map<String, dynamic>> getCityWeatherInfo(final String requestedCity) async {
 
 
-    final baseURL = Uri.parse("http://$targetedServer/api/weather-info?city=$requestedCity");
+    final baseURL = Uri.parse("https://$targetedServer/api/weather-info?city=$requestedCity");
     final response = await http.get(baseURL, headers: {"Access-Control-Allow-Origin": "*"});
 
     if (response.statusCode == 200){
@@ -25,7 +26,7 @@ class DataService {
 
       if (element == null ){
 
-        final postURL = Uri.parse("http://$targetedServer/api/weather-info");
+        final postURL = Uri.parse("https://$targetedServer/api/weather-info");
 
         final params = {
           "message": "No data found for $requestedCity",
@@ -54,7 +55,7 @@ class DataService {
 
   Future<List<String>> getSuggestion(final String suggestionWord) async {
 
-    final baseURL = Uri.parse("http://$targetedServer/api/places");
+    final baseURL = Uri.parse("https://$targetedServer/api/places");
 
     final String uuid = const Uuid().v4();
 
