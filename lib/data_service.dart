@@ -52,7 +52,7 @@ class DataService {
     }
   }
 
-  Future<List<String>> getSuggestion(final String suggestionWord, String uuid) async {
+  Future<List<String>> getSuggestion(final String suggestionWord, final String uuid) async {
 
     final baseURL = Uri.parse("https://$targetedServer/api/places");
 

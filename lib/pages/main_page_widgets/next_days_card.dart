@@ -31,8 +31,8 @@ class NextDaysCard extends StatelessWidget {
       });
     }*/
 
-    List<DailyWeather>? dayDetails = null;
-    List<String>? nextDay = null;
+    List<DailyWeather>? dayDetails;
+    List<String>? nextDay;
     DailyWeather? yesterday;
 
     if (lastSelectedCity != "Select City" && returnedJsonData.isNotEmpty) {
