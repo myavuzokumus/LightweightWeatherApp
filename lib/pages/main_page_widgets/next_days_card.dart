@@ -7,6 +7,7 @@ import '../../main.dart';
 import '../../models/daily_weather.dart';
 import '../../models/weather_func.dart';
 import '../../models/weather_info.dart';
+import '../main_page.dart';
 
 class NextDaysCard extends StatelessWidget {
   const NextDaysCard({required this.weatherInfo, super.key, required this.returnedJsonData});
@@ -46,6 +47,8 @@ class NextDaysCard extends StatelessWidget {
         color: Colors.indigo.withOpacity(0.25),
         clipBehavior: Clip.hardEdge,
         child: InkWell(
+          //Drawer will be opening if no city added yet
+          onTap: lastSelectedCity == "Select City" ? () {drawerKey.currentState!.openDrawer();} : null,
           splashColor: Colors.blue.withAlpha(30),
           child: Container(
             width: 425,

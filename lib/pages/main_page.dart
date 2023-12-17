@@ -16,6 +16,7 @@ import 'main_page_widgets/next_days_card.dart';
 import 'main_page_widgets/weather_title.dart';
 
 //bool refreshState = false;
+final GlobalKey<ScaffoldState> drawerKey = GlobalKey();
 
 class WeatherHomePage extends StatefulWidget {
   const WeatherHomePage({super.key});
@@ -41,6 +42,7 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
     });
   */
 
+    //Refresh page when page fully load
     SchedulerBinding.instance.addPostFrameCallback((final _) {
       refreshKey.currentState?.show();
     });
@@ -77,6 +79,7 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
     final bool isScreenWide = MediaQuery.of(context).size.width >= 960;
 
     return Scaffold(
+      key: drawerKey,
       extendBodyBehindAppBar: true,
       backgroundColor: Theme.of(context).colorScheme.inversePrimary,
       appBar: AppBar(
@@ -228,6 +231,12 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
                   cityDataBox.get("cities") ?? <String>[];
 
               final int cityCount = cities.length;
+
+              if (cityCount == 1) {
+                lastSelectedCity = cities.first;
+                cityDataBox.put("lastSelected", lastSelectedCity);
+                unawaited(refreshKey.currentState?.show());
+              }
 
               return SizedBox(
                 height: cityCount < 11 ? (cityCount == 0 ? 20 : 35 + (cityCount * 50)) : 500,
