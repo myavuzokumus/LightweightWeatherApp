@@ -46,7 +46,8 @@ class WeatherTitle extends StatelessWidget {
         Flexible(
           child: Lottie.asset(
               getAnimationOfWeather(
-                  weatherInfo.currentWeather, currentTime),
+                  weatherInfo.currentWeather,
+                  currentTime),
               width: 256),
         ),
       ],

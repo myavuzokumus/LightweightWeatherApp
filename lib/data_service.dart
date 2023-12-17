@@ -8,7 +8,7 @@ import 'package:http/http.dart' as http;
 class DataService {
 
   //final targetedServer = (defaultTargetPlatform == TargetPlatform.android || defaultTargetPlatform == TargetPlatform.iOS) ? "10.0.2.2:8000" : "localhost:8000";
-  final targetedServer = "weather.sc-riber.games";
+  final String targetedServer = "weather.sc-riber.games";
 
   Future<Map<String, dynamic>> getCityWeatherInfo(final String requestedCity) async {
 

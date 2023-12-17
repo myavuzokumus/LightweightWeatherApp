@@ -1,6 +1,9 @@
+import 'package:flutter/material.dart';
+
 import 'weather_info.dart';
 
-class HourlyWeather extends WeatherInfo {
+@immutable
+final class HourlyWeather extends WeatherInfo {
 
   final String hourTemp;
   final int temperature;

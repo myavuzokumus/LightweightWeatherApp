@@ -1,5 +1,8 @@
+import 'package:flutter/material.dart';
+
 import 'weather_info.dart';
 
+@immutable
 class DailyWeather extends WeatherInfo {
 
   @override

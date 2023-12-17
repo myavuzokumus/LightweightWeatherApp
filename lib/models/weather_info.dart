@@ -1,8 +1,11 @@
 //import 'dart:math';
 
+import 'package:flutter/material.dart';
+
 import 'daily_weather.dart';
 import 'hourly_weather.dart';
 
+@immutable
 class WeatherInfo {
 
   final String city;
@@ -13,7 +16,7 @@ class WeatherInfo {
   final int feelsLike;
   final String currentWeather;
 
-  WeatherInfo(this.city, this.currentWeather, this.instantTemperature, this.dayTemperature, this.nightTemperature, this.feelsLike, this.humidity);
+  const WeatherInfo(this.city, this.currentWeather, this.instantTemperature, this.dayTemperature, this.nightTemperature, this.feelsLike, this.humidity);
 
   /*{
     // Here the values will be retrieved via API.

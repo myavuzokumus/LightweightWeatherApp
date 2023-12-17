@@ -9,7 +9,7 @@ import '/pages/add_city.dart';
 
 import 'pages/main_page.dart';
 
-final cityDataBox = Hive.box('selectedCities');
+final Box cityDataBox = Hive.box('selectedCities');
 String lastSelectedCity = cityDataBox.get("lastSelected") ?? "Select City";
 
 void main() async {
@@ -17,6 +17,7 @@ void main() async {
 
   await Hive.initFlutter();
   await Hive.openBox('selectedCities');
+
   //await dotenv.load(fileName: ".env");
 
   if (defaultTargetPlatform != TargetPlatform.iOS &&
@@ -32,6 +33,8 @@ void main() async {
     });
   }
 
+
+
   runApp(const WeatherAppMain());
 }
 
@@ -40,6 +43,7 @@ class WeatherAppMain extends StatelessWidget {
 
   @override
   Widget build(final BuildContext context) {
+
     return ScreenUtilInit(
       designSize: const Size(360, 690),
       minTextAdapt: true,

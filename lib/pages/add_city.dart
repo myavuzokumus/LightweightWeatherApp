@@ -22,11 +22,12 @@ class _AddCityState extends State<AddCity> {
 
   int foundedCityCount = 0;
 
-  final String uuid = const Uuid().v4();
+  late final String uuid;
 
   @override
   void initState() {
     super.initState();
+     uuid = const Uuid().v4();
   }
 
   @override
@@ -81,7 +82,7 @@ class _AddCityState extends State<AddCity> {
                 ));
               } else {
                 await cityDataBox.put("cities", <String>[
-                  ...?cityDataBox.get("cities"),
+                  ...cities,
                   stateCity
                 ]);
                 if (mounted) {
