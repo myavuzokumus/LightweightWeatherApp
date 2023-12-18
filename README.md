@@ -16,7 +16,7 @@ flutter create weather_app
 
 2. Clone the repository:
 ```
-git clone https://github.com/myavuzokumus/WeatherApp.git
+git clone https://github.com/myavuzokumus/LightweightWeatherApp.git
 ```
 
 3. Test your changes by running the app on an emulator or a physical device:
@@ -37,8 +37,8 @@ flutter run
 
 ## APIs
 
-- [visualcrossing] - Weather Data
-- [Google Maps AutoComplete Places]- City Data
+- [visualcrossing](https://www.visualcrossing.com/weather/weather-data-services) - Weather Data
+- [Google Maps AutoComplete Places] - City Data
 
 ## Assets Licence
 
