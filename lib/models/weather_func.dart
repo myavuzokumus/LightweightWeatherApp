@@ -76,7 +76,11 @@ String getAnimationOfWeather(final String type, final String hour) {
   final int newHour = int.parse(hour.substring(0,2));
   switch (type) {
     case  "clear-day":
-      return "assets/icons/lottie/clear-day.json";
+      if (newHour > 6 && newHour < 19) {
+        return "assets/icons/lottie/clear-day.json";
+      } else {
+        return "assets/icons/lottie/clear-night.json";
+      }
     case  "clear-night":
         return "assets/icons/lottie/clear-night.json";
     case ("partly-cloudy-day" || "partly-cloudy-night" || "cloudy"):

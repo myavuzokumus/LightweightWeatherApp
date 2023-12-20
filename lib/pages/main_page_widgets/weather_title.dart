@@ -34,7 +34,7 @@ class WeatherTitle extends StatelessWidget {
                 ),
                 Text(
                   '${weatherInfo.dayTemperature}° / ${weatherInfo.nightTemperature}°'
-                      '\nFeels like ${weatherInfo.feelsLike}°',
+                  '\nFeels like ${weatherInfo.feelsLike}°',
                   style: TextStyle(
                       fontSize: 14.spMin,
                       color: Colors.white.withOpacity(0.7)),
