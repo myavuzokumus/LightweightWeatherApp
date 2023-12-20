@@ -28,16 +28,17 @@ class _HourlyStatusCardState extends State<HourlyStatusCard> {
   void initState() {
     scrollController = ScrollController();
 
+    if (lastSelectedCity != "Select City" || widget.returnedJsonData.isNotEmpty) {
+      hourlyWeatherDetails = getHoursData();
+    }
+
+    //To make the animation work when the page is first load.
     WidgetsBinding.instance.addPostFrameCallback((final _) {
       if (scrollController.hasClients) {
         scrollController.animateTo(hours.indexOf(widget.currentTime).toDouble() * 76,
             duration: const Duration(seconds: 1), curve: Curves.easeOut);
       }
     });
-
-    if (lastSelectedCity != "Select City" || widget.returnedJsonData.isNotEmpty) {
-      hourlyWeatherDetails = getHoursData();
-    }
 
     super.initState();
 
@@ -55,6 +56,19 @@ class _HourlyStatusCardState extends State<HourlyStatusCard> {
 
   }
 
+  @override
+  void didUpdateWidget(covariant final HourlyStatusCard oldWidget) {
+
+    //To make the animation work when the page is refreshed.
+    WidgetsBinding.instance.addPostFrameCallback((final _) {
+      if (scrollController.hasClients) {
+        scrollController.animateTo(hours.indexOf(widget.currentTime).toDouble() * 76,
+            duration: const Duration(seconds: 1), curve: Curves.easeOut);
+      }
+    });
+
+    super.didUpdateWidget(oldWidget);
+  }
 
   @override
   Widget build(final BuildContext context) {
