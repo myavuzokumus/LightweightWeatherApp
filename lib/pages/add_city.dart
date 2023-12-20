@@ -14,26 +14,26 @@ class AddCity extends StatefulWidget {
 }
 
 class _AddCityState extends State<AddCity> {
-  TextEditingController searchTextController = TextEditingController();
 
-  List<String> cities = cityDataBox.get("cities") ?? <String>[];
+  late final TextEditingController searchTextController;
+
+  final List<String> cities = cityDataBox.get("cities") ?? <String>[];
 
   List<String> predictedList = <String>[];
-
-  int foundedCityCount = 0;
 
   late final String uuid;
 
   @override
   void initState() {
+    searchTextController = TextEditingController();
+    uuid = const Uuid().v4();
     super.initState();
-     uuid = const Uuid().v4();
   }
 
   @override
   void dispose() {
-    super.dispose();
     searchTextController.dispose();
+    super.dispose();
   }
 
   @override

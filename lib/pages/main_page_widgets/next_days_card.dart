@@ -10,10 +10,14 @@ import '../../models/weather_info.dart';
 import '../main_page.dart';
 
 class NextDaysCard extends StatelessWidget {
-  const NextDaysCard({required this.weatherInfo, super.key, required this.returnedJsonData});
+   NextDaysCard({required this.weatherInfo, super.key, required this.returnedJsonData});
 
   final WeatherInfo weatherInfo;
   final Map<String, dynamic> returnedJsonData;
+
+  List<DailyWeather>? dayDetails;
+  List<String>? nextDay;
+  DailyWeather? yesterday;
 
   List<DailyWeather> getDailyData() {
     return returnedJsonData["daily"].map<DailyWeather>( (final value) => weatherInfo.dailyInfo(value)).toList();
@@ -22,23 +26,10 @@ class NextDaysCard extends StatelessWidget {
   @override
   Widget build(final BuildContext context) {
 
-/*    if (refreshState == true && lastSelectedCity != "Select City") {
-      setState(() {
-        dayDetails = getDailyData();
-        nextDay = nextDays(nextDay: 6, currentDay: dayDetails[1].day);
-        yesterday = dayDetails[0];
-        refreshState = false;
-      });
-    }*/
-
-    List<DailyWeather>? dayDetails;
-    List<String>? nextDay;
-    DailyWeather? yesterday;
-
     if (lastSelectedCity != "Select City" && returnedJsonData.isNotEmpty) {
       dayDetails = getDailyData();
-      nextDay = nextDays(nextDay: 6, currentDay: dayDetails[1].day);
-      yesterday = dayDetails[0];
+      nextDay = nextDays(nextDay: 6, currentDay: dayDetails![1].day);
+      yesterday = dayDetails![0];
     }
 
     return Center(

@@ -7,42 +7,57 @@ import '../../models/hourly_weather.dart';
 import '../../models/weather_func.dart';
 import '../../models/weather_info.dart';
 
-class HourlyStatusCard extends StatelessWidget {
-  HourlyStatusCard({required this.weatherInfo, required this.currentTime, super.key, required this.returnedJsonData});
+class HourlyStatusCard extends StatefulWidget {
+  const HourlyStatusCard({required this.weatherInfo, required this.currentTime, super.key, required this.returnedJsonData});
 
   final WeatherInfo weatherInfo;
   final String currentTime;
   final Map<String, dynamic> returnedJsonData;
 
-  final ScrollController scrollController = ScrollController();
+  @override
+  State<HourlyStatusCard> createState() => _HourlyStatusCardState();
+}
+
+class _HourlyStatusCardState extends State<HourlyStatusCard> {
+
+  late final ScrollController scrollController;
 
   late final List<HourlyWeather> hourlyWeatherDetails;
 
-  List<HourlyWeather> getHoursData() {
-
-    return returnedJsonData["hourly"].map<HourlyWeather>( (final value) => weatherInfo.hourlyInfo(value)).toList();
-  }
-
   @override
-  Widget build(final BuildContext context) {
-
-/*    if (refreshState == true) {
-      setState(() {
-        hourlyWeatherDetails = getHoursData();
-        currentTime = widget.currentTime;
-      });
-    }*/
+  void initState() {
+    scrollController = ScrollController();
 
     WidgetsBinding.instance.addPostFrameCallback((final _) {
       if (scrollController.hasClients) {
-        scrollController.animateTo(hours.indexOf(currentTime).toDouble() * 76,
+        scrollController.animateTo(hours.indexOf(widget.currentTime).toDouble() * 76,
             duration: const Duration(seconds: 1), curve: Curves.easeOut);
       }
     });
 
-    if (lastSelectedCity != "Select City" || returnedJsonData.isNotEmpty) {
+    if (lastSelectedCity != "Select City" || widget.returnedJsonData.isNotEmpty) {
       hourlyWeatherDetails = getHoursData();
     }
+
+    super.initState();
+
+  }
+
+  @override
+  void dispose() {
+    scrollController.dispose();
+    super.dispose();
+  }
+
+  List<HourlyWeather> getHoursData() {
+
+    return widget.returnedJsonData["hourly"].map<HourlyWeather>( (final value) => widget.weatherInfo.hourlyInfo(value)).toList();
+
+  }
+
+
+  @override
+  Widget build(final BuildContext context) {
 
     return Container(
       width: 425,
@@ -62,7 +77,7 @@ class HourlyStatusCard extends StatelessWidget {
             scrollDirection: Axis.horizontal,
             itemCount: hours.length,
             itemBuilder: (final BuildContext context, final int index) {
-        
+
               return Card(
                 shadowColor: Colors.black,
                 color: Colors.indigo.withOpacity(0.25),
@@ -73,7 +88,7 @@ class HourlyStatusCard extends StatelessWidget {
                     child: Container(
                       width: 75,
                       padding: const EdgeInsets.all(3),
-                      color: currentTime == hours[index]
+                      color: widget.currentTime == hours[index]
                           ? Colors.indigo.shade300
                           : Colors.transparent,
                       child: Column(
