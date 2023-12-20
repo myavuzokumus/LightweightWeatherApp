@@ -15,7 +15,6 @@ import 'main_page_widgets/hourly_status_card.dart';
 import 'main_page_widgets/next_days_card.dart';
 import 'main_page_widgets/weather_title.dart';
 
-//bool refreshState = false;
 final GlobalKey<ScaffoldState> drawerKey = GlobalKey();
 
 class WeatherHomePage extends StatefulWidget {
@@ -76,6 +75,7 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
 
   @override
   Widget build(final BuildContext context) {
+
     final bool isScreenWide = MediaQuery.of(context).size.width >= 960;
 
     return Scaffold(
@@ -232,12 +232,6 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
 
               final int cityCount = cities.length;
 
-              if (cityCount == 1) {
-                lastSelectedCity = cities.first;
-                cityDataBox.put("lastSelected", lastSelectedCity);
-                unawaited(refreshKey.currentState?.show());
-              }
-
               return SizedBox(
                 height: cityCount < 11 ? (cityCount == 0 ? 20 : 35 + (cityCount * 50)) : 500,
                 child: cityCount == 0
@@ -310,8 +304,15 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
           ),
           FilledButton.tonalIcon(
               label: const Text('Add city'),
-              onPressed: () {
-                Navigator.pushNamed(context, '/addCity');
+              onPressed: () async {
+                final returnedCity = await Navigator.pushNamed(context, '/addCity');
+                final List<String> cities =
+                    cityDataBox.get("cities") ?? <String>[];
+                if (cities.length == 1) {
+                  lastSelectedCity = cities.first;
+                  await cityDataBox.put("lastSelected", lastSelectedCity);
+                  unawaited(refreshKey.currentState?.show());
+                }
               },
               icon: const Icon(Icons.add)),
           Expanded(

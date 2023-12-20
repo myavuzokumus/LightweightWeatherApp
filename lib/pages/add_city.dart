@@ -86,7 +86,7 @@ class _AddCityState extends State<AddCity> {
                   stateCity
                 ]);
                 if (mounted) {
-                  Navigator.pop(context, true);
+                  Navigator.pop(context, stateCity);
                 }
               }
             },
