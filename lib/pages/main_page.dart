@@ -55,22 +55,23 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
     super.initState();
   }
 
-  Future<Map<String, dynamic>> refreshCityInfo() async {
-    setState(() {
-      //refreshState = true;
-      if (lastSelectedCity != "Select City") {
-        returnedJsonData = DataService().getCityWeatherInfo(lastSelectedCity);
-      } else {
-        returnedJsonData = Future.value({});
-      }
-    });
+  Future<void> refreshCityInfo() async {
+
+    if (lastSelectedCity != "Select City") {
+      returnedJsonData = DataService().getCityWeatherInfo(lastSelectedCity);
+    } else {
+      returnedJsonData = Future.value({});
+    }
+
+    await returnedJsonData;
+
+    setState(() {});
 
     WidgetsBinding.instance.addPostFrameCallback((final timeStamp) {
       ScaffoldMessenger.of(context)
           .showSnackBar(const SnackBar(content: Text("Page is reloaded.")));
     });
 
-    return returnedJsonData;
   }
 
   @override
@@ -305,11 +306,11 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
           FilledButton.tonalIcon(
               label: const Text('Add city'),
               onPressed: () async {
-                final returnedCity = await Navigator.pushNamed(context, '/addCity');
+                final String? returnedCity = await Navigator.pushNamed<String>(context, '/addCity');
                 final List<String> cities =
                     cityDataBox.get("cities") ?? <String>[];
                 if (cities.length == 1) {
-                  lastSelectedCity = cities.first;
+                  lastSelectedCity = returnedCity!;
                   await cityDataBox.put("lastSelected", lastSelectedCity);
                   unawaited(refreshKey.currentState?.show());
                 }
