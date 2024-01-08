@@ -22,7 +22,7 @@ class _HourlyStatusCardState extends State<HourlyStatusCard> {
 
   late final ScrollController scrollController;
 
-  late final List<HourlyWeather> hourlyWeatherDetails;
+  late List<HourlyWeather> hourlyWeatherDetails;
 
   @override
   void initState() {
@@ -59,8 +59,13 @@ class _HourlyStatusCardState extends State<HourlyStatusCard> {
   @override
   void didUpdateWidget(covariant final HourlyStatusCard oldWidget) {
 
+    if (lastSelectedCity != "Select City" || widget.returnedJsonData.isNotEmpty) {
+      hourlyWeatherDetails = getHoursData();
+    }
+
     //To make the animation work when the page is refreshed.
     WidgetsBinding.instance.addPostFrameCallback((final _) {
+
       if (scrollController.hasClients) {
         scrollController.animateTo(hours.indexOf(widget.currentTime).toDouble() * 76,
             duration: const Duration(seconds: 1), curve: Curves.easeOut);
