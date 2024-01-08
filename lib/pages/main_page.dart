@@ -234,7 +234,7 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
               final int cityCount = cities.length;
 
               return SizedBox(
-                height: cityCount < 11 ? (cityCount == 0 ? 20 : 35 + (cityCount * 50)) : 500,
+                height: cityCount < 9 ? (cityCount == 0 ? 20 : ((cityCount + 0.5) * 60)) : 510,
                 child: cityCount == 0
                     ? const Text("No city added yet.")
                     : ListView.separated(
@@ -306,11 +306,11 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
           FilledButton.tonalIcon(
               label: const Text('Add city'),
               onPressed: () async {
-                final String? returnedCity = await Navigator.pushNamed<String>(context, '/addCity');
+                final returnedCity = await Navigator.pushNamed(context, '/addCity');
                 final List<String> cities =
                     cityDataBox.get("cities") ?? <String>[];
                 if (cities.length == 1) {
-                  lastSelectedCity = returnedCity!;
+                  lastSelectedCity = (returnedCity! as String);
                   await cityDataBox.put("lastSelected", lastSelectedCity);
                   unawaited(refreshKey.currentState?.show());
                 }
