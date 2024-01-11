@@ -4,9 +4,10 @@ import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_web_plugins/url_strategy.dart' show usePathUrlStrategy;
 import 'package:hive_flutter/hive_flutter.dart';
-import '/pages/add_city.dart';
 
+import '/pages/add_city.dart';
 import 'pages/main_page.dart';
 
 final Box cityDataBox = Hive.box('selectedCities');
@@ -33,8 +34,7 @@ void main() async {
     });
   }
 
-
-
+  usePathUrlStrategy();
   runApp(const WeatherAppMain());
 }
 
